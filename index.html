@@ -217,6 +217,20 @@ footer{text-align:center;padding:34px 20px 44px;color:var(--ink-faint);font-size
 .dl-bar i{display:block;height:100%;width:0;border-radius:5px;background:linear-gradient(90deg,#d99a2b,#b5432a);transition:width .3s}
 .sw-hint{display:flex;align-items:center;gap:7px;font-size:12px;color:#2c5f5d;background:var(--teal-soft);border-radius:9px;padding:7px 11px;margin-top:12px}
 .sw-hint.ok{background:#e2f0e5}
+/* ---------- spot detail page ---------- */
+.sd-back{display:inline-flex;align-items:center;gap:6px;padding:10px 0;font-size:14px;color:var(--ink-soft)}
+.sd-back:hover{color:var(--red)}
+.sd-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px;flex-wrap:wrap}
+.sd-header h2{font-size:22px;font-weight:700;letter-spacing:.02em}
+.sd-meta{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 14px;font-size:13px;color:var(--ink-soft)}
+.sd-meta i{font-style:normal;display:inline-flex;align-items:center;gap:4px}
+.sd-player{width:100%;border-radius:14px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.1);margin-bottom:14px;background:#000}
+.sd-player iframe{width:100%;height:200px;border:none;display:block}
+.sd-player .lb{display:flex;align-items:center;gap:6px;padding:8px 12px;font-size:12.5px;font-weight:600;color:#fff}
+.sd-player .lb.bili{background:#fb7299}
+.sd-player .lb.douyin{background:#111}
+.sd-player .lb.xhs{background:#ff2442}
+.sd-nar{padding:14px 16px;border-radius:14px;background:#fffaf0;border:1px solid #eddfbe;font-size:14.5px;line-height:2;color:#4a4238;white-space:pre-wrap;text-align:justify;margin:14px 0}
 </style>
 </head>
 <body>
@@ -251,6 +265,7 @@ footer{text-align:center;padding:34px 20px 44px;color:var(--ink-faint);font-size
   <section id="p-overview"></section>
   <section id="p-route" style="display:none"></section>
   <section id="p-spots" style="display:none"></section>
+  <section id="p-spot-detail" style="display:none"></section>
   <section id="p-food" style="display:none"></section>
   <section id="p-todo" style="display:none"></section>
 </main>
@@ -449,7 +464,7 @@ cityOrder.map(c=>{
   return `<div class="city-h"><span class="flag">${{["南京"]:"🏯",["洛阳"]:"🛕",["西安"]:"🕌",["三门峡"]:"⛰️",["合肥"]:"🌳"}[c]}</span><b class="serif">${c}</b><span class="cnt">${list.length} 个景点</span></div>`+
   list.map(s=>`
   <div class="card spot" id="spot-${s.id}">
-    <div class="spot-top" onclick="toggleSpot('${s.id}')">
+    <div class="spot-top" onclick="openSpotDetail('${s.id}')">
       <div class="spot-emoji">${s.emoji}</div>
       <div class="m">
         <div class="nm"><b>${esc(s.name)}</b><span class="stars">${"★".repeat(Math.round(s.rating))}${"☆".repeat(5-Math.round(s.rating))} ${s.rating}</span></div>
@@ -622,11 +637,40 @@ $("#mask").addEventListener("click",e=>{if(e.target.id==="mask")closeModal()});
 renderTodo();
 
 /* =============== TABS =============== */
+function openSpotDetail(id){
+  const s=SPOTS.find(x=>x.id===id);
+  if(!s)return;
+  const bvid=BILI_VIDS[id]||"";
+  const nar=NAR[id]||"";
+  const enc=encodeURIComponent(s.name);
+  $("#p-spot-detail").innerHTML=`
+  <a onclick="closeSpotDetail();return false" href="#" class="sd-back">‹ 返回景点列表</a>
+  <div class="sd-header"><h2>${s.emoji} ${esc(s.name)}</h2><span class="stars">${"★".repeat(Math.round(s.rating))}${"☆".repeat(5-Math.round(s.rating))}</span></div>
+  <div class="sd-meta"><i>📍 ${esc(s.city)}</i><i>⏱️ ${esc(s.dur)}</i><i>🎫 ${esc(s.price)}</i></div>
+  ${bvid?`<div class="sd-player"><div class="lb bili">📺 B站精选视频</div><iframe src="https://player.bilibili.com/player.html?bvid=${bvid}&autoplay=false&high_quality=1" allowfullscreen></iframe></div>`:""}
+  <div class="sd-player"><div class="lb douyin">🎵 抖音搜索「${esc(s.name)}」</div><iframe src="https://www.douyin.com/search/${enc}" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" allowfullscreen></iframe></div>
+  <div class="sd-player"><div class="lb xhs">📕 小红书搜索「${esc(s.name)}」</div><iframe src="https://www.xiaohongshu.com/search_result?keyword=${enc}" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" allowfullscreen></iframe></div>
+  ${nar?`<div class="sd-nar">${esc(nar)}</div>`:""}
+  <a onclick="closeSpotDetail();return false" href="#" class="sd-back">‹ 返回景点列表</a>`;
+  closeSpotDetail();
+  showPage("spot-detail");
+}
+function closeSpotDetail(){
+  showPage("spots");
+}
+function showPage(name){
+  const map={overview:"#p-overview",route:"#p-route",spots:"#p-spots","spot-detail":"#p-spot-detail",food:"#p-food",todo:"#p-todo"};
+  Object.values(map).forEach(s=>{const el=$(s);if(el)el.style.display="none"});
+  const el=$(map[name]);if(el)el.style.display="block";
+  $$(".tab").forEach(t=>t.classList.toggle("on",t.dataset.t===name));
+  // 隐藏底部导航（详情页）
+  const nb=document.querySelector(".NavigationBar");
+  if(nb)nb.style.display=name==="spot-detail"?"none":"";
+  window.scrollTo({top:0});
+}
 const PAGES={overview:"#p-overview",route:"#p-route",spots:"#p-spots",food:"#p-food",todo:"#p-todo"};
 $$(".tab").forEach(t=>t.onclick=()=>{
-  $$(".tab").forEach(x=>x.classList.remove("on"));t.classList.add("on");
-  Object.values(PAGES).forEach(s=>$(s).style.display="none");
-  $(PAGES[t.dataset.t]).style.display="block";window.scrollTo({top:0});
+  showPage(t.dataset.t);
 });
 
 /* =============== HASH ROUTE (PWA shortcuts) =============== */
