@@ -1,0 +1,27 @@
+{
+  "name": "山河明月行 · 中秋国庆家庭自驾游",
+  "short_name": "山河明月行",
+  "description": "杭州-南京-洛阳-西安-三门峡 12天11晚家庭自驾手册：行程、19段语音讲解、食宿与预订待办",
+  "id": "/",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#1d2a3a",
+  "theme_color": "#1d2a3a",
+  "lang": "zh-CN",
+  "dir": "ltr",
+  "categories": ["travel", "lifestyle"],
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "🎧 语音讲解", "url": "/#spots" },
+    { "name": "📋 预订待办", "url": "/#todo" },
+    { "name": "📅 每日行程", "url": "/#route" }
+  ]
+}

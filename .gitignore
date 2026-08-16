@@ -1,0 +1,11 @@
+node_modules/
+.skpm/
+.DS_Store
+*.log
+.env
+.agents/
+.claude/
+skills-lock.json
+__pycache__/
+*.pyc
+/audio/
