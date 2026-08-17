@@ -257,6 +257,7 @@ footer{text-align:center;padding:34px 20px 44px;color:var(--ink-faint);font-size
   <button class="tab on" data-t="overview">总览</button>
   <button class="tab" data-t="route">行程</button>
   <button class="tab" data-t="spots">景点 · 语音讲解</button>
+  <button class="tab" data-t="hotel">住宿</button>
   <button class="tab" data-t="food">美食住宿</button>
   <button class="tab" data-t="todo">预订待办<span class="dot" id="todoDot" style="display:none"></span></button>
 </div></nav>
@@ -266,6 +267,7 @@ footer{text-align:center;padding:34px 20px 44px;color:var(--ink-faint);font-size
   <section id="p-route" style="display:none"></section>
   <section id="p-spots" style="display:none"></section>
   <section id="p-spot-detail" style="display:none"></section>
+  <section id="p-hotel" style="display:none"></section>
   <section id="p-food" style="display:none"></section>
   <section id="p-todo" style="display:none"></section>
 </main>
@@ -366,12 +368,34 @@ const FOODS=[
 {c:"西安",n:"德发长饺子馆（钟楼店）",t:"饺子宴",p:"人均100元",a:"碑林区钟楼广场",d:["饺子宴","太后火锅","酸汤水饺"],tip:"工作日午餐；百饺百形孩子看花眼。"},
 {c:"武汉",n:"蔡林记热干面（户部巷店）",t:"武汉小吃",p:"人均25元",a:"武昌区户部巷",d:["热干面","三鲜豆皮","面窝","蛋酒"],tip:"武汉中转晚餐首选，户部巷百年老店。边吃边逛，走几步就到黄鹤楼。"}];
 
+/* 住宿方案（页面估价）+ 实价监测（2026-08-17，trip.com/Booking 实测，USD×7.15≈¥，2成人1间标准间；家庭房通常+20~40%） */
 const HOTELS_R=[
-{c:"南京 · 夫子庙",n:"汉庭酒店(南京夫子庙店)",price:"200-350/晚",a:"秦淮区夫子庙附近",f:["免费停车","近夫子庙","干净卫生","性价比高"],tip:"9/25一晚；中秋夜赏月后开车回酒店，有免费停车场。"},
-{c:"洛阳 · 洛龙区",n:"汉庭酒店(洛阳龙门石窟店)",price:"180-300/晚",a:"洛龙区龙门大道619号",f:["免费停车","近龙门石窟","华住连锁","洗衣房"],tip:"连住2晚（9/26-9/27）。距龙门石窟车程10分钟，免费停车。"},
-{c:"西安 · 大雁塔",n:"汉庭酒店(西安大雁塔大唐不夜城店)",price:"250-400/晚",a:"雁塔区大雁塔附近",f:["免费停车","家庭房","近大雁塔","自助入住"],tip:"连住2晚（9/28-9/29）。免费停车场，步行到大雁塔15分钟，自驾去景点很方便。"},
-{c:"三门峡 · 湖滨区",n:"7天连锁酒店(三门峡万达广场店)",price:"150-250/晚",a:"湖滨区万达广场附近",f:["免费停车","近天鹅湖","性价比高","干净"],tip:"连住4晚（9/30-10/3）。停车方便，距天鹅湖约10分钟车程，国庆期间价格实惠。"},
-{c:"武汉 · 黄鹤楼",n:"汉庭酒店(武汉黄鹤楼户部巷店)",price:"200-350/晚",a:"武昌区黄鹤楼附近",f:["免费停车","步行户部巷","近黄鹤楼","性价比高"],tip:"回程中转1晚（10/4）。免费停车，步行到户部巷吃小吃、看黄鹤楼夜景。"}];
+{c:"南京 · 夫子庙",n:"汉庭酒店(南京夫子庙店)",price:"200-350/晚",a:"秦淮区夫子庙附近",f:["免费停车","近夫子庙","干净卫生","性价比高"],tip:"9/25一晚；中秋夜赏月后开车回酒店，有免费停车场。",real:[
+ ["南京状元楼大酒店（金陵状元楼）","≈¥515","★推荐：比汉庭还便宜，步行4分钟到夫子庙，行程关键位"],
+ ["汉庭·夫子庙店（2025新开）","≈¥558","中秋夜溢价明显，评分9.6"],
+ ["汉庭·夫子庙长乐路地铁站店","≈¥415","早鸟价，离主街区稍远"],
+ ["汉庭·夫子庙景区店（2026翻新）","≈¥458","早鸟价，评分9.4"]]},
+{c:"洛阳 · 洛龙区",n:"汉庭酒店(洛阳龙门石窟店)",price:"180-300/晚",a:"洛龙区龙门大道619号",f:["免费停车","近龙门石窟","华住连锁","洗衣房"],tip:"连住2晚（9/26-9/27）。距龙门石窟车程10分钟，免费停车。",real:[
+ ["汉庭·洛阳龙门站店","≈¥200","同片区（龙门高铁站），2晚共¥400"],
+ ["青芜巷民宿 Qingwu Lane","≈¥386","Booking 4.8分，老城文艺院落"],
+ ["颐和酒店 Yihe Hotel","≈¥443","Booking 实价，市中心"],
+ ["华阳广场国际大饭店（日程款）","≈¥536","近龙门石窟，含早，五口家庭房首选"]]},
+{c:"西安 · 大雁塔",n:"汉庭酒店(西安大雁塔大唐不夜城店)",price:"250-400/晚",a:"雁塔区大雁塔附近",f:["免费停车","家庭房","近大雁塔","自助入住"],tip:"连住2晚（9/28-9/29）。免费停车场，步行到大雁塔15分钟，自驾去景点很方便。",real:[
+ ["汉庭·大雁塔大唐不夜城店","≈¥308","步行5分钟到大唐不夜城，仅剩3间"],
+ ["晨舍酒店·南门早市店","≈¥308","Booking 实价，近城墙南门"],
+ ["希尔顿欢朋·大雁塔店（日程款）","≈¥400（房价含早）","步行9分钟到大雁塔，不夜城夜景随时回；页面提醒『立刻预订』其实不必要——工作日无溢价"],
+ ["康帕斯钟楼回民街店","≈¥437","钟楼核心位，逛街吃饭最方便"]]},
+{c:"三门峡 · 湖滨区",n:"7天连锁酒店(三门峡万达广场店)",price:"150-250/晚",a:"湖滨区万达广场附近",f:["免费停车","近天鹅湖","性价比高","干净"],tip:"连住4晚（9/30-10/3）。停车方便，距天鹅湖约10分钟车程，国庆期间价格实惠。",real:[
+ ["悦枫酒店 CHEERMAY·黄河东路","≈¥250","同区经济档实价，4晚共¥1,000"],
+ ["海联国际酒店","≈¥314","35%国庆折扣后，4晚¥1,256"],
+ ["万达美华酒店","≈¥314","平陆县（距万达5.7英里），4晚¥1,256"],
+ ["天鹅湖国际酒店（日程款）","≈¥386","步行6分钟到天鹅湖湿地，4晚共¥1,640；国庆无爆价，『冷门价格合理』判断成立"],
+ ["全季·三门峡市政府店","≈¥358","2025新开，评分9.7，4晚¥1,436"]]},
+{c:"武汉 · 黄鹤楼",n:"汉庭酒店(武汉黄鹤楼户部巷店)",price:"200-350/晚",a:"武昌区黄鹤楼附近",f:["免费停车","步行户部巷","近黄鹤楼","性价比高"],tip:"回程中转1晚（10/4）。免费停车，步行到户部巷吃小吃、看黄鹤楼夜景。⚠️ 实价监测：此店国际平台无货，同区汉庭已涨到¥870+，建议看备选。",real:[
+ ["汉庭·归元寺钟家村店","≈¥443","★性价比首选：过江即黄鹤楼，省一半"],
+ ["汉庭·武昌火车站店","≈¥472","距黄鹤楼2.8英里，开车10分钟"],
+ ["汉庭·黄鹤楼店","≈¥873","黄鹤楼核心位，假期尾段3~4倍溢价"],
+ ["汉庭·黄鹤楼红墙店（2025新开）","≈¥987","离户部巷450米，位置最好但最贵"]]}];
 
 /* 默认待办（酒店预订清单，可编辑，localStorage 持久化） */
 const DEF_TODOS=[];
@@ -560,18 +584,65 @@ FOODS.map(f=>`
     <a href="https://www.amap.com/search?query=合肥美食排行榜" target="_blank" rel="noopener" style="text-decoration:none;color:#2c5f5d;background:rgba(44,95,93,.1);padding:5px 12px;border-radius:99px">🌳 合肥</a>
   </div>
   <div class="tiny" style="margin-top:8px;color:var(--ink-faint)">点城市名打开高德地图，查看当地美食/酒店/景点排行榜，同城搜索可直接在地图上看口味评价和排队情况。</div>
-</div>`+
-`<div class="sec-title"><span class="bar"></span>🏨 住宿方案（5城 · 共10晚）</div>`+
-HOTELS_R.map(h=>`
+</div>`;
+renderHotel();
+
+/* =============== HOTEL (独立页签 · 实价监测) =============== */
+function renderHotel() {
+  const saved = (() => { try { return JSON.parse(localStorage.getItem("hotel_prices")); } catch(e) { return null; } })();
+  const refreshed = localStorage.getItem("hotel_refreshed") || "2026-08-17";
+  const data = saved && saved.length > 0 ? saved : HOTELS_R;
+  $("#p-hotel").innerHTML = `
+<div class="sec-title" style="margin-top:8px"><span class="bar"></span>🏨 住宿方案（5城 · 共10晚）</div>
+<div class="ov-note" style="margin-bottom:6px"><span class="ic">💰</span><div><b>实价监测 · 上次刷新: ${esc(refreshed)}</b>（trip.com / Booking.com 实测，≈¥按 USD×7.15 折算，2成人1间标准间，家庭房通常+20~40%）。三个要点：<b>① 9/25 南京直接订状元楼</b>（≈¥515，比汉庭便宜还更近夫子庙）；<b>② 洛阳/西安/三门峡六晚估价基本准确</b>；<b>③ 10/4 武汉是全程唯一爆价点</b>——建议改武昌火车站或汉阳钟家村，省一半。</div></div>
+<div style="display:flex;gap:8px;margin-bottom:12px"><button onclick="refreshHotelPrices()" style="flex:1;padding:10px 14px;border:none;border-radius:10px;background:var(--teal,#2c5f5d);color:#fff;font-size:14px;font-weight:600;cursor:pointer">🔄 刷新参考价</button></div>
+${data.map(h => `
 <div class="card hotel-r">
   <div class="ic">🏨</div>
   <div class="m">
     <b>${esc(h.n)}</b><span class="price">${esc(h.price)}</span>
-    <div class="tiny" style="margin-top:2px">📍 ${esc(h.c)} · ${esc(h.a)}</div>
-    <div class="feat">${h.f.map(x=>`<span>${esc(x)}</span>`).join("")}</div>
+    <div class="tiny" style="margin-top:2px">📍 ${esc(h.c)}</div>
+    <div class="feat">${(h.f || []).map(x => `<span>${esc(x)}</span>`).join("")}</div>
     <div class="tiny" style="margin-top:7px;color:var(--ink-soft)">${esc(h.tip)}</div>
+    ${h.real ? `<div class="tiny" style="margin-top:8px;padding-top:7px;border-top:1px dashed var(--line,#d8e0e8);color:var(--ink-soft)"><b style="color:var(--ink,#1d2a3a)">💰 实价参考（每段多家可选）</b><div style="display:flex;flex-direction:column;gap:4px;margin-top:4px">${h.real.map(r => `<div>• <b>${esc(r[0])}</b> <span style="color:#a04b3a">${esc(r[1])}</span>/晚 — ${esc(r[2])}</div>`).join("")}</div></div>` : ""}
   </div>
-</div>`).join("");
+</div>`).join("")}`;
+}
+function refreshHotelPrices() {
+  const cmd = "cd .agents/skills/pricewin-hotel-deal-finder && node bin/search.js \"Nanjing\" 2026-09-25 2026-09-26 2 en-us";
+  $("#modal").innerHTML = `
+<h3>🔄 刷新参考价<button onclick="closeModal()">×</button></h3>
+<div style="margin:10px 0;font-size:13px;line-height:1.7;color:var(--ink-soft)">
+  <p>实价来自本地的 pricewin 技能（需先安装），步骤如下：</p>
+  <ol style="margin:8px 0 0 16px;padding:0">
+    <li style="margin-bottom:6px">在终端运行以下命令（逐城搜索，每城首次约1~2分钟）：</li>
+  </ol>
+  <div style="background:#f5f7f9;border-radius:8px;padding:10px;font-size:11px;font-family:monospace;word-break:break-all;margin:6px 0 10px;position:relative">
+    <code id="refreshCmd"># 5座城市依次搜索，复制后逐条执行\ncd .agents/skills/pricewin-hotel-deal-finder && node bin/search.js "Nanjing" 2026-09-25 2026-09-26 2 en-us\nnode bin/search.js "Luoyang" 2026-09-26 2026-09-28 2 en-us\nnode bin/search.js "Xian" 2026-09-28 2026-09-30 2 en-us\nnode bin/search.js "Sanmenxia" 2026-09-30 2026-10-04 2 en-us\nnode bin/search.js "Wuhan" 2026-10-04 2026-10-05 2 en-us</code>
+    <button onclick="copyRefreshCmd()" style="position:absolute;top:6px;right:6px;padding:4px 10px;border:none;border-radius:6px;background:var(--teal,#2c5f5d);color:#fff;font-size:11px;cursor:pointer">📋 复制</button>
+  </div>
+  <p><b>编辑手动价格</b>：如果已有最新数据，可编辑下方 JSON 后保存。</p>
+  <textarea id="priceEditor" style="width:100%;min-height:120px;border:1px solid var(--line,#d8e0e8);border-radius:8px;padding:8px;font-size:12px;font-family:monospace;margin:4px 0 8px;box-sizing:border-box">${JSON.stringify(HOTELS_R, null, 2)}</textarea>
+  <button onclick="saveRefreshedPrices()" style="width:100%;padding:10px;border:none;border-radius:10px;background:var(--teal,#2c5f5d);color:#fff;font-size:14px;font-weight:600;cursor:pointer">💾 保存到网页</button>
+</div>`;
+  showModal();
+}
+function copyRefreshCmd() {
+  const el = document.getElementById("refreshCmd");
+  if (el) { navigator.clipboard.writeText(el.innerText); toast("命令已复制"); }
+}
+function saveRefreshedPrices() {
+  try {
+    const raw = document.getElementById("priceEditor").value;
+    const data = JSON.parse(raw);
+    if (!Array.isArray(data) || data.length === 0) throw new Error("数据格式不对");
+    localStorage.setItem("hotel_prices", JSON.stringify(data));
+    localStorage.setItem("hotel_refreshed", new Date().toISOString().slice(0, 10));
+    toast("实价已保存 ✓");
+    closeModal();
+    renderHotel();
+  } catch(e) { toast("❌ 保存失败: " + e.message); }
+}
 
 /* =============== TODO (editable, localStorage) =============== */
 const LS="trip_hotels_v4";
@@ -668,6 +739,7 @@ async function saveTodo(id) {
     toast("已保存 ✓");
   } catch(e) { toast("保存失败"); }
 }
+function showModal(){$("#mask").classList.add("show")}
 function closeModal(){$("#mask").classList.remove("show")}
 $("#mask").addEventListener("click",e=>{if(e.target.id==="mask")closeModal()});
 loadTodos();
@@ -698,7 +770,7 @@ function closeSpotDetail(){
   showPage("spots");
 }
 function showPage(name){
-  const map={overview:"#p-overview",route:"#p-route",spots:"#p-spots","spot-detail":"#p-spot-detail",food:"#p-food",todo:"#p-todo"};
+  const map={overview:"#p-overview",route:"#p-route",spots:"#p-spots","spot-detail":"#p-spot-detail",hotel:"#p-hotel",food:"#p-food",todo:"#p-todo"};
   Object.values(map).forEach(s=>{const el=$(s);if(el)el.style.display="none"});
   const el=$(map[name]);if(el)el.style.display="block";
   $$(".tab").forEach(t=>t.classList.toggle("on",t.dataset.t===name));
@@ -707,7 +779,7 @@ function showPage(name){
   if(nb)nb.style.display=name==="spot-detail"?"none":"";
   window.scrollTo({top:0});
 }
-const PAGES={overview:"#p-overview",route:"#p-route",spots:"#p-spots",food:"#p-food",todo:"#p-todo"};
+const PAGES={overview:"#p-overview",route:"#p-route",spots:"#p-spots",hotel:"#p-hotel",food:"#p-food",todo:"#p-todo"};
 $$(".tab").forEach(t=>t.onclick=()=>{
   showPage(t.dataset.t);
 });
