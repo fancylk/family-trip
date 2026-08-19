@@ -21,7 +21,7 @@ const intro = {
 "sanmenxia-swan": "黄河湿地栈道：天鹅之城的故事，白鹭水鸟芦苇荡（天鹅10月下旬抵达）。",
 "sanmenxia-guoguo": "假道伐虢·唇亡齿寒发生地：原址车马坑比兵马俑早500年，中华第一剑。",
 "sanmenxia-daba": "万里黄河第一坝：人门神门鬼门、大禹斧劈三门、中流砥柱石。",
-"hefei-xiaoyaojin": "张辽威震逍遥津：三国古战场遗址，回程晨走收官。",
+"kaifeng-qingminghuayuan": "以《清明上河图》复原的宋代主题园：民俗表演、市井百态，夜场《大宋·东京梦华》水上实景演出。",
 };
 
 const spots = [
@@ -43,7 +43,7 @@ const spots = [
   { id:"sanmenxia-swan", name:"天鹅湖湿地公园", city:"三门峡", emoji:"🦢", rating:4.5, dur:"2小时", price:"免费" },
   { id:"sanmenxia-guoguo", name:"虢国博物馆", city:"三门峡", emoji:"⚔️", rating:4.5, dur:"1.5小时", price:"40元（60+免票）" },
   { id:"sanmenxia-daba", name:"三门峡大坝·中流砥柱", city:"三门峡", emoji:"🌊", rating:4.2, dur:"2小时", price:"现场公示" },
-  { id:"hefei-xiaoyaojin", name:"逍遥津公园", city:"合肥", emoji:"🌳", rating:4.2, dur:"1小时", price:"免费" },
+  { id:"kaifeng-qingminghuayuan", name:"清明上河园", city:"开封", emoji:"🏯", rating:4.7, dur:"3-4小时", price:"白天120元（60+半价）；夜游100元" },
 ].map(s => ({ ...s, intro: intro[s.id] }));
 
 let html = readFileSync("/Users/taoge/family-trip-web/index.html", "utf8");
