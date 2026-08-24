@@ -1017,13 +1017,14 @@ if("serviceWorker" in navigator){
 }else maybeShowFab();
 </script>
 
-<!-- 乐乐小导游专属：iPad 实时自动刷新与通知组件 -->
-<div id="lele-update-toast" style="display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#e8b95a,#d49430);color:#221500;padding:12px 24px;border-radius:99px;font-size:15px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.35);z-index:99999;border:1px solid #fff3d0;">
-  🎉 乐乐，新导游内容已就绪！正在同步更新...
+<!-- 乐乐小导游专属：iPad 实时自动刷新与 MiMo 语音播报组件 -->
+<div id="lele-update-toast" style="display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#e8b95a,#d49430);color:#221500;padding:14px 28px;border-radius:99px;font-size:16px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,0.35);z-index:99999;border:2px solid #fff3d0;">
+  🎉 乐乐小导游新任务发布！正在播放小米 MiMo 语音讲解...
 </div>
 <script>
 (function() {
   let localVer = null;
+  const audioObj = new Audio();
   function checkLeleUpdates() {
     fetch('./version.json?_t=' + Date.now(), { cache: 'no-store' })
       .then(res => res.json())
@@ -1034,8 +1035,15 @@ if("serviceWorker" in navigator){
         } else if (localVer !== data.version) {
           localVer = data.version;
           const toast = document.getElementById('lele-update-toast');
-          if (toast) { toast.style.display = 'block'; }
-          setTimeout(() => { window.location.reload(); }, 1500);
+          if (toast) {
+            toast.innerHTML = `🎉 ${data.msg || "乐乐小导游新任务发布！"} 🎙️ (正在播放 MiMo 语音)`;
+            toast.style.display = 'block';
+          }
+          if (data.audio_url) {
+            audioObj.src = data.audio_url + '?_t=' + Date.now();
+            audioObj.play().catch(() => {});
+          }
+          setTimeout(() => { window.location.reload(); }, 2800);
         }
       })
       .catch(() => {});
