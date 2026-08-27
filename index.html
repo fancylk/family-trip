@@ -32,37 +32,37 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 input,select,textarea{font-family:inherit;font-size:15px}
 
 /* ---------- hero ---------- */
-.hero{position:relative;background:linear-gradient(165deg,#1a2436 0%,#2c3e56 55%,#43546e 100%);color:#f5efe2;overflow:hidden;padding:0 0 26px}
+.hero{position:relative;background:linear-gradient(165deg,#1a2436 0%,#2c3e56 55%,#43546e 100%);color:#f5efe2;overflow:hidden;padding:0 0 18px}
 .hero .stars{position:absolute;inset:0;pointer-events:none}
 .hero .star{position:absolute;width:3px;height:3px;border-radius:50%;background:#fff;opacity:.7;animation:tw 3s ease-in-out infinite}
 @keyframes tw{0%,100%{opacity:.15}50%{opacity:.85}}
 .hero .moon{position:absolute;right:8%;top:34px;width:92px;height:92px;border-radius:50%;background:radial-gradient(circle at 38% 34%,#fff7dd,#f4d98b 58%,#e8b95a);box-shadow:0 0 60px 18px rgba(244,217,139,.35);animation:float 7s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .hero .mountains{position:absolute;bottom:-2px;left:0;right:0;height:70px;opacity:.5}
-.hero-in{position:relative;max-width:760px;margin:0 auto;padding:46px 20px 0}
-.hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.2em;color:#e8cf9a;border:1px solid rgba(232,207,154,.45);padding:5px 14px;border-radius:99px;margin-bottom:18px}
+.hero-in{position:relative;max-width:760px;margin:0 auto;padding:30px 20px 0}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.2em;color:#e8cf9a;border:1px solid rgba(232,207,154,.45);padding:5px 14px;border-radius:99px;margin-bottom:12px}
 .hero h1{font-size:34px;letter-spacing:.12em;font-weight:600;line-height:1.3}
 .hero h1 small{display:block;font-size:14px;letter-spacing:.35em;font-weight:400;color:#cbb98f;margin-top:10px}
-.route-line{display:flex;align-items:center;flex-wrap:wrap;gap:6px 0;margin:26px 0 6px;font-size:14px}
+.route-line{display:flex;align-items:center;flex-wrap:wrap;gap:6px 0;margin:18px 0 4px;font-size:14px}
 .route-line b{font-weight:600;color:#fff;position:relative;padding:0 2px}
 .route-line .sep{color:#e8cf9a;padding:0 7px;font-size:12px;position:relative;top:-1px}
 .route-line .sep::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#e8cf9a;margin-right:7px;vertical-align:2px}
-.hero-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .hero-meta span{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(4px);padding:6px 14px;border-radius:99px;font-size:13px;color:#f0e8d5}
 
 /* ---------- sticky tabs ---------- */
 .tabs{position:sticky;top:0;z-index:50;background:rgba(247,242,233,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .tabs-in{max-width:760px;margin:0 auto;display:flex;padding:0 12px;overflow-x:auto;scrollbar-width:none}
 .tabs-in::-webkit-scrollbar{display:none}
-.tab{flex:none;padding:13px 16px;font-size:15px;color:var(--ink-faint);border-bottom:2.5px solid transparent;transition:.2s;white-space:nowrap}
+.tab{flex:none;padding:10px 14px;font-size:15px;color:var(--ink-faint);border-bottom:2.5px solid transparent;transition:.2s;white-space:nowrap}
 .tab.on{color:var(--red);border-color:var(--red);font-weight:600}
 .tab .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-left:5px;vertical-align:2px;animation:tw 2s infinite}
 
-main{max-width:760px;margin:0 auto;padding:18px 16px 90px}
+main{max-width:760px;margin:0 auto;padding:12px 16px 42px}
 
 /* ---------- cards & shared ---------- */
-.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);border:1px solid rgba(232,224,210,.6);padding:18px 18px}
-.sec-title{display:flex;align-items:center;gap:10px;margin:26px 4px 14px;font-size:19px;font-weight:700;letter-spacing:.05em}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);border:1px solid rgba(232,224,210,.6);padding:14px 16px}
+.sec-title{display:flex;align-items:center;gap:10px;margin:18px 4px 10px;font-size:19px;font-weight:700;letter-spacing:.05em}
 .sec-title .bar{width:5px;height:20px;border-radius:3px;background:linear-gradient(#d99a2b,#b5432a)}
 .muted{color:var(--ink-soft)} .tiny{font-size:12.5px;color:var(--ink-faint)}
 .pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:3px 10px;border-radius:99px;background:var(--gold-soft);color:#8a6414}
@@ -71,11 +71,11 @@ main{max-width:760px;margin:0 auto;padding:18px 16px 90px}
 .pill.blue{background:var(--blue-soft);color:var(--blue)}
 
 /* ---------- overview ---------- */
-.ov-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
-.ov-stat{background:var(--card);border-radius:14px;padding:14px 8px;text-align:center;border:1px solid rgba(232,224,210,.6)}
+.ov-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.ov-stat{background:var(--card);border-radius:14px;padding:11px 7px;text-align:center;border:1px solid rgba(232,224,210,.6)}
 .ov-stat b{display:block;font-size:21px;color:var(--red);font-weight:700}
 .ov-stat span{font-size:12px;color:var(--ink-faint)}
-.ov-note{display:flex;gap:12px;padding:15px 16px;border-radius:14px;background:linear-gradient(135deg,#fdf8ec,#faf1dd);border:1px solid #eddfbe;font-size:13.5px;color:#7c641e;line-height:1.8}
+.ov-note{display:flex;gap:12px;padding:12px 14px;border-radius:14px;background:linear-gradient(135deg,#fdf8ec,#faf1dd);border:1px solid #eddfbe;font-size:13.5px;color:#7c641e;line-height:1.8}
 .ov-note .ic{font-size:18px;flex:none}
 
 /* ---------- route timeline ---------- */
@@ -106,12 +106,12 @@ main{max-width:760px;margin:0 auto;padding:18px 16px 90px}
 .seg-ct .tip{font-size:12.5px;color:#8a6414;background:#faf3e2;border-radius:9px;padding:6px 10px;margin-top:6px;line-height:1.65}
 
 /* ---------- spots ---------- */
-.city-h{display:flex;align-items:center;gap:10px;margin:24px 2px 12px}
+.city-h{display:flex;align-items:center;gap:10px;margin:18px 2px 8px}
 .city-h .flag{font-size:20px}
 .city-h b{font-size:17.5px;letter-spacing:.06em}
 .city-h .cnt{font-size:12px;color:var(--ink-faint);background:var(--card);border:1px solid var(--line);padding:2px 10px;border-radius:99px}
-.spot{margin-bottom:12px;overflow:hidden}
-.spot-top{display:flex;gap:13px;align-items:flex-start;padding:16px 16px 12px;cursor:pointer}
+.spot{margin-bottom:9px;overflow:hidden}
+.spot-top{display:flex;gap:13px;align-items:flex-start;padding:13px 14px 9px;cursor:pointer}
 .spot-emoji{flex:none;width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;background:linear-gradient(135deg,#faf3e2,#f3e6c8)}
 .spot-top .m{flex:1;min-width:0}
 .spot-top .m .nm{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -124,6 +124,16 @@ main{max-width:760px;margin:0 auto;padding:18px 16px 90px}
 .spot.open .go{transform:rotate(90deg)}
 .spot-detail{display:none;border-top:1px dashed var(--line);padding:14px 16px 16px;background:#fffaf0}
 .spot.open .spot-detail{display:block;animation:fade .3s}
+.spot-city-nav{display:flex;gap:7px;overflow-x:auto;padding:0 2px 4px;margin:-2px 0 12px;scrollbar-width:none}
+.spot-city-nav::-webkit-scrollbar{display:none}
+.spot-city-nav a{flex:none;display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border:1px solid var(--line);border-radius:99px;background:var(--card);color:var(--teal);font-size:13px;text-decoration:none}
+.spot-city-nav a span{font-size:11px;color:var(--ink-faint)}
+.spot-guide{display:grid;gap:6px;margin-top:9px}
+.spot-guide>div{display:grid;grid-template-columns:53px 1fr;gap:6px;align-items:start;font-size:12.5px;line-height:1.65;color:var(--ink-soft)}
+.spot-guide b{font-weight:600;color:var(--teal)}
+.spot-guide-detail{margin:14px 0}
+.spot-guide-detail>div{grid-template-columns:62px 1fr;font-size:13.5px;line-height:1.75;padding:7px 0;border-bottom:1px dashed var(--line)}
+.spot-guide-detail>div:last-child{border-bottom:none}
 
 /* ---------- audio player ---------- */
 .player{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#2c3e56,#43546e);border-radius:15px;padding:12px 14px;color:#f2ead8;box-shadow:0 4px 14px rgba(44,62,86,.28)}
@@ -185,7 +195,7 @@ main{max-width:760px;margin:0 auto;padding:18px 16px 90px}
 .modal{background:var(--card);width:100%;max-width:560px;border-radius:22px 22px 0 0;padding:22px 20px 30px;max-height:86vh;overflow-y:auto;animation:up .25s}
 @keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
 .modal h3{font-size:17px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
-.modal h3 button{font-size:24px;color:var(--ink-faint);line-height:1;padding:4px}
+footer{text-align:center;padding:22px 20px 28px;color:var(--ink-faint);font-size:12.5px;line-height:2}
 .fld{margin-bottom:13px}
 .fld label{display:block;font-size:12.5px;color:var(--ink-soft);margin-bottom:5px}
 .fld input,.fld select,.fld textarea{width:100%;border:1.5px solid var(--line);border-radius:11px;padding:10px 12px;background:#fff;outline:none;transition:.15s}
@@ -648,12 +658,37 @@ SPOTS.push({id:"nanjing-laomendong",name:"老门东历史街区",city:"南京",e
 Object.assign(NAR,{"nanjing-laomendong":"乐乐，欢迎来到南京的老门东！这里不是一座普通的商场，而是一片藏在明城墙脚下的老城南街区。你看，脚下的青石板路、两边的木头门窗，还有屋檐下的红灯笼，都在告诉我们：南京人已经在这里生活了好多好多年。\n\n老门东的名字很有意思。南京城墙有很多城门，中华门的东边就是老门东。以前，城门附近是最热闹的地方，挑担子的商贩、做手艺的师傅和赶集的百姓，都会在这里碰面。这里还保留着许多老房子，走进小巷，就像把脚步放慢，穿过了一本会走路的南京历史书。\n\n等会儿我们可以找找看：哪里有秦淮灯彩？哪家店飘出鸭子和糕点的香味？如果看到砖墙上的小门，不妨猜猜它以前是做什么用的。逛老门东不用急着打卡，和爷爷奶奶一起找一处长椅歇一歇，听听街巷里的声音，再把最喜欢的一扇老窗户讲给全家听。\n\n从老门东走向夫子庙，正好能把南京的老城南和秦淮河连起来。白天看青砖灰瓦，晚上看灯影摇曳，这就是南京把古老日子过出新味道的办法。\n\n小任务：请乐乐带全家找到三种不同形状的屋檐，再选一盏最喜欢的灯笼，给它编一个名字！"});
 Object.assign(NAR,{"luoyang-baimasi":"乐乐，今天我们要听一个特别有画面感的故事：一匹白马，驮着经书和佛像，走了很远很远的路，最后把一座寺院的名字留在了洛阳。这个故事的名字就叫\"白马驮经\"，而故事发生的地方，就是眼前的白马寺。\n\n先把时间拨回到将近两千年前的东汉。那时的皇帝汉明帝住在洛阳。传说有一天晚上，他梦见一个浑身金光、头顶放着白光的人，从远方来到宫殿上空。皇帝醒来后觉得奇怪，就问大臣：\"我梦见的这位客人是谁？\"大臣告诉他，西方有一位很有智慧的圣人，名字叫\"佛\"，皇帝梦中的金人可能就是佛。\n\n汉明帝很想知道佛法到底是什么，于是派蔡愔等使者向西寻找。使者骑马、走路，经过了很远的路，在西域一带遇到了两位来自天竺的高僧：摄摩腾和竺法兰。他们请两位高僧带着佛经和佛像一起回洛阳。经书和佛像很重，路又远，最后是两匹白马帮忙驮回来的。白马没有说话，却完成了这次改变中国文化的长途旅行。\n\n回到洛阳以后，汉明帝下令修建寺院，专门安置高僧、经书和佛像。为了记住两匹辛苦赶路的白马，人们给寺院取名\"白马寺\"。所以，\"白马寺\"并不是说寺里养了很多白马，而是把\"白马驮经\"这段故事写进了名字里。你一会儿在山门前看到的石马，就是后人用来纪念它们的。\n\n这座寺院还有两个重要的\"第一\"。传统上，它被称为中国第一座官办佛教寺院；摄摩腾和竺法兰曾在这里翻译《四十二章经》，这是佛教经典翻译传入中国的重要开端。寺院东边的齐云塔，也常被称为中国最早的佛塔之一。后来很多人从这里学习、翻译、传播佛经，所以白马寺又被尊称为\"中国佛教的祖庭\"，意思是许多佛教寺院都把它当作自己的老祖宗。\n\n现在的白马寺经过许多朝代修缮，眼前的建筑不全是东汉原来的样子，但\"白马驮经\"的故事一直流传下来。寺里还有泰国、缅甸、印度风格的佛殿：金色、白色和圆顶建筑各有特色，像一座小小的亚洲建筑博物馆。你看，古代的一次远行，今天还在把不同地方的人和文化连接在一起。\n\n小任务：请乐乐找到山门前的石马，给它讲一句\"谢谢你驮经回洛阳\"；再找出国际佛殿区里三种不同的屋顶，看看它们分别像什么！"});
 const baimasiSpot=SPOTS.find(s=>s.id==="luoyang-baimasi");if(baimasiSpot)baimasiSpot.voice="browser";
+const SPOT_GUIDE={
+  "nanjing-fuzimiao":{history:"夫子庙供奉孔子，秦淮河边的江南贡院曾是古代最大的科举考场，许多读书人在这里等待改变命运。",fun:"找文德桥的桥影，听秦淮河的水声；如果夜游画舫，可以观察两岸灯笼倒映在水里的样子。",food:"尝鸭血粉丝汤、盐水鸭和小笼包；小吃多，和老人孩子一起少量多尝。"},
+  "nanjing-zhonghuamen":{history:"中华门原名聚宝门，明代修建，三道瓮城和藏兵洞组成层层防守的城堡。",fun:"数一数三道城门，想象守城士兵怎样从藏兵洞观察来路；城砖上的文字也是古代工程记录。",food:"南京盐水鸭、鸭血粉丝汤和梅花糕都很有地方味，选软烂少油的更适合老人。"},
+  "nanjing-laomendong":{history:"老门东位于中华门以东，是南京老城南传统街巷的更新街区，青砖灰瓦保留着城南生活的样子。",fun:"找秦淮灯彩、老门牌和不同形状的屋檐，给最喜欢的一盏灯笼编一个名字。",food:"锅贴、小馄饨、梅花糕和金陵糕点适合边走边尝，注意热食先吹凉再入口。"},
+  "luoyang-longmen":{history:"北魏至唐代，人们在伊河两岸山崖上开凿龙门石窟；卢舍那大佛是其中最醒目的造像。",fun:"找大小不同的佛像和万佛洞的小造像，看看古代工匠怎样在石头上留下细节。",food:"逛完可尝洛阳水席、牡丹燕菜或浆面条；水席菜多，家庭可以点少量分食。"},
+  "luoyang-museum":{history:"洛阳先后有多个王朝建都，博物馆用青铜器、玉器和唐三彩讲述这座古都的漫长历史。",fun:"玩“博物馆寻宝”：找华夏第一爵、曹魏白玉杯、唐三彩和石辟邪，并说出它们的材质。",food:"可选洛阳水席、牛肉汤和浆面条；汤食趁热但别烫嘴，先让大人试温度。"},
+  "luoyang-baimasi":{history:"传说汉明帝夜梦金人，派使者西行求法；摄摩腾、竺法兰和白马驮经回到洛阳，寺院因此得名。",fun:"找山门前的石马，再去国际佛殿区比较泰国、缅甸、印度建筑的屋顶。",food:"白马寺周边可尝洛阳牛肉汤、胡辣汤和不翻汤；口味较重时记得搭配清淡主食。"},
+  "luoyang-luoyi":{history:"“洛邑”是洛阳的古称，文峰塔和老城街巷把古都记忆与传统手工艺连接在一起。",fun:"看吹糖人、剪纸和皮影，观察师傅怎样不用图纸做出作品；全家还可以穿汉服合影。",food:"尝洛阳小街锅贴、牡丹燕菜或传统糕点，逛市集时注意摊位卫生和食品温度。"},
+  "luoyang-yingtianmen":{history:"应天门是隋唐洛阳城宫城正南门，武则天时期曾在这里举行重要仪式。",fun:"白天看门阙的层层结构，晚上看灯光如何把古建筑变成大屏幕，找找哪一处最像飞檐。",food:"洛阳水席、烩面和小街锅贴都可作为晚餐选择，灯光秀前提前留出用餐时间。"},
+  "xian-bingmayong":{history:"兵马俑陪葬坑在1974年被打井的村民发现，陶俑守护着秦始皇陵园，许多俑还保留不同装束和姿态。",fun:"玩“找不同”：比较发髻、胡须、铠甲和站姿；不要触摸文物，也不要在展厅大声喧哗。",food:"临潼石榴、肉夹馍、凉皮和羊肉泡馍都值得尝，泡馍可以让孩子自己慢慢掰。"},
+  "xian-dayanta":{history:"玄奘取经归来后主持修建大雁塔，用来保存佛经；古代进士还会来这里题名，留下“雁塔题名”的典故。",fun:"数一数塔的层数，观察砖砌结构；傍晚看音乐喷泉和塔影，给全家拍一张剪影照。",food:"大雁塔周边可尝肉夹馍、葫芦鸡和陕西面食，景区人多时优先选择座位稳定的餐馆。"},
+  "xian-datangbuyecheng":{history:"大唐不夜城用灯光、建筑和演艺重现盛唐长安的城市想象，街区尽头可远望大雁塔。",fun:"找不倒翁表演、盛唐密盒和“李白”互动点位；观看时站在安全区域，别拥挤追逐演员。",food:"可尝毛笔酥、肉夹馍、biangbiang面和冰峰汽水，夜游时少量多次，给老人安排休息点。"},
+  "xian-shanxi-history":{history:"陕西历史博物馆汇集关中地区从远古到唐代的文物，展品让人看见古代长安与各地的交流。",fun:"寻找镶金兽首玛瑙杯、舞马衔杯银壶、皇后之玺，猜猜它们分别用什么材料制作。",food:"参观后可吃泡馍、臊子面和甑糕；博物馆预约入馆，建议先确认开放时间再安排午餐。"},
+  "xian-citywall":{history:"今天的西安城墙主要形成于明代，城墙、城门、敌楼和马面共同组成完整的防御系统。",fun:"从永宁门登城，找敌楼和垛口；可以租自行车，也可以陪爷爷奶奶走一小段看日落。",food:"城墙南门附近有肉夹馍、凉皮和饺子宴，运动后补水，别只顾着拍照忘了休息。"},
+  "xian-huiminjie":{history:"回民街所在的回坊是西安重要的回族聚居区，清真饮食和街巷生活在这里延续了很久。",fun:"去大皮院、洒金桥找不同小吃，观察香料和面食做法；进入清真寺等场所要尊重当地礼仪。",food:"羊肉泡馍、肉夹馍、甑糕和烤肉很受欢迎，选择清真餐馆，食物滚烫时先放凉。"},
+  "sanmenxia-huashan":{history:"华山以花岗岩山峰和险峻山路闻名，西峰又称莲花峰；今天可乘索道欣赏高山景色。",fun:"坐索道找山脊和云海，抵达后寻找“莲花”般的岩石；山路边听从工作人员安排，不攀爬护栏。",food:"登山前后可吃面食、羊肉泡和当地烧饼，随身准备饮水与简单点心，避免空腹乘索道。"},
+  "sanmenxia-hangu":{history:"函谷关是古代关隘，老子骑青牛出关、紫气东来和鸡鸣狗盗都是与这里相关的著名典故。",fun:"找关楼、古道和城墙位置，玩“谁先发现紫气”的观察游戏；景区行走注意台阶。",food:"灵宝羊肉汤、烧饼夹肉和面食适合沿途补充体力，口味偏咸时多喝水。"},
+  "sanmenxia-dikengyuan":{history:"地坑院把院子向黄土塬地下挖，窑洞围绕天井排列，形成冬暖夏凉的地下四合院。",fun:"从地面找入口，数一数院子里的窑洞；观察树、排水井和挡水设计，猜猜它们各自的作用。",food:"地坑院里的陕州十大碗、条子肉和农家豆腐很有地方特色，和家人分食更容易尝到多种味道。"},
+  "sanmenxia-swan":{history:"三门峡黄河湿地是候鸟迁徙和越冬的重要区域，白天鹅通常在更晚的秋冬季节大量抵达。",fun:"沿栈道安静观察芦苇、白鹭和水面，不追鸟、不投喂；带望远镜可以寻找远处的白色身影。",food:"湿地游览后可尝三门峡特色面食和羊肉汤，户外活动记得带水，也要把垃圾带走。"},
+  "sanmenxia-guoguo":{history:"虢国博物馆建在虢国墓地遗址附近，“假道伐虢”和“唇亡齿寒”的成语故事与这片土地有关。",fun:"看车马坑、玉柄铁剑和墓葬文物，想象古人如何把车马整齐排列；参观时保持安静。",food:"可选三门峡羊肉汤、烧饼夹肉和家常面食，博物馆附近用餐前先查看营业时间。"},
+  "sanmenxia-daba":{history:"三门峡大坝是黄河上的大型水利工程；“人门、神门、鬼门”和中流砥柱也留下了大禹治水的传说。",fun:"听黄河水声，找中流砥柱石和泄洪设施；在安全观景区观察水流，不靠近危险水域。",food:"沿黄河可尝羊肉汤、烧饼夹肉和陕州面食，风大时带外套，吃饭选择室内座位更舒适。"},
+  "kaifeng-qingminghuayuan":{history:"清明上河园以张择端《清明上河图》中的北宋汴京市井生活为灵感，复原桥梁、街市和表演。",fun:"找虹桥、吹糖人和宋装表演，晚上看水上实景演出；提前确认演出时间，别错过集合点。",food:"园内可尝灌汤包、桶子鸡和炒凉粉；灌汤包先开小口放热气，再慢慢喝汤。"},
+  "kaifeng-longting":{history:"龙亭所在位置是北宋皇宫遗址，今天的大殿建在古城台之上，潘杨二湖流传着清浊辨忠奸的民间故事。",fun:"登台阶看古城，找潘家湖和杨家湖，再观察十月菊花展里不同颜色的菊花。",food:"开封灌汤包、桶子鸡和炒凉粉都可尝，吃包子记得轻轻提、慢慢移、先开窗、后喝汤。"}
+};
 const cityOrder=["南京","洛阳","西安","三门峡","开封"];
 $("#p-spots").innerHTML=`<div class="sec-title" style="margin-top:8px"><span class="bar"></span>🎧 ${SPOTS.length}个景点 · 点击卡片收听语音讲解</div>
+<div class="spot-city-nav">${cityOrder.filter(c=>SPOTS.some(s=>s.city===c)).map(c=>`<a href="#city-${encodeURIComponent(c)}">${c}<span>${SPOTS.filter(s=>s.city===c).length}</span></a>`).join("")}</div>
 <div class="ov-note" style="margin-bottom:6px"><span class="ic">🎙️</span><div>22段「讲给10岁小朋友听」的语音故事——19段已离线生成（每段约2分钟），白马寺、龙亭公园和新加的老门东故事使用浏览器朗读版，录音生成后就换上。到了景点直接点播放，把手机递给乐乐，让她当全家的小导游吧。流量担心？页面加载后语音可正常播放，无需再联网下载大文件。</div></div>`+
 cityOrder.map(c=>{
   const list=SPOTS.filter(s=>s.city===c); if(!list.length)return"";
-  return `<div class="city-h"><span class="flag">${{["南京"]:"🏯",["洛阳"]:"🛕",["西安"]:"🕌",["三门峡"]:"⛰️",["开封"]:"🏯"}[c]}</span><b class="serif">${c}</b><span class="cnt">${list.length} 个景点</span></div>`+
+  return `<div class="city-h" id="city-${encodeURIComponent(c)}"><span class="flag">${{["南京"]:"🏯",["洛阳"]:"🛕",["西安"]:"🕌",["三门峡"]:"⛰️",["开封"]:"🏯"}[c]}</span><b class="serif">${c}</b><span class="cnt">${list.length} 个景点</span></div>`+
   list.map(s=>`
   <div class="card spot" id="spot-${s.id}">
     <div class="spot-top" onclick="openSpotDetail('${s.id}')">
@@ -662,6 +697,7 @@ cityOrder.map(c=>{
         <div class="nm"><b>${esc(s.name)}</b><span class="stars">${"★".repeat(Math.round(s.rating))}${"☆".repeat(5-Math.round(s.rating))} ${s.rating}</span></div>
         <div class="meta"><i>📍${esc(s.city)}</i><i>⏱️${esc(s.dur)}</i><i>🎫${esc(s.price)}</i></div>
         <div class="desc">${esc(s.intro||"")}</div>
+        ${(()=>{const g=SPOT_GUIDE[s.id]||{};return `<div class="spot-guide"><div><b>📖 典故</b><span>${esc(g.history||"")}</span></div><div><b>🎲 好玩</b><span>${esc(g.fun||"")}</span></div><div><b>🍜 好吃</b><span>${esc(g.food||"")}</span></div></div>`})()}
       </div>
       <span class="go">▸</span>
     </div>
@@ -943,6 +979,7 @@ function openSpotDetail(id){
   const bvid=BILI_VIDS[id]||"";
   const nar=NAR[id]||"";
   const guide=window.POETRY_GUIDE[id]||null;
+  const spotGuide=SPOT_GUIDE[id]||null;
   const enc=encodeURIComponent(s.name);
   $("#p-spot-detail").innerHTML=`
   <a onclick="closeSpotDetail();return false" href="#" class="sd-back">‹ 返回景点列表</a>
@@ -959,6 +996,7 @@ function openSpotDetail(id){
     </div>
     <button class="pspeed" onclick="cycleSpeed('${s.id}')" id="ps-${s.id}">1.0x</button>
   </div>
+  ${spotGuide?`<div class="spot-guide spot-guide-detail"><div><b>📖 典故</b><span>${esc(spotGuide.history)}</span></div><div><b>🎲 好玩</b><span>${esc(spotGuide.fun)}</span></div><div><b>🍜 好吃</b><span>${esc(spotGuide.food)}</span></div></div>`:""}
   ${bvid?`<div class="sd-player"><div class="lb bili">📺 B站精选 · ${esc(s.name)}</div><iframe src="https://player.bilibili.com/player.html?bvid=${bvid}&autoplay=false&high_quality=1" allowfullscreen></iframe></div>
   <a style="display:block;text-align:right;font-size:12.5px;color:var(--ink-faint);margin-top:-10px;margin-bottom:14px;text-decoration:none" href="https://search.bilibili.com/all?keyword=${enc}%20旅游攻略" target="_blank" rel="noopener">查看更多B站视频 ›</a>`:""}
   <div class="sd-player"><div class="lb douyin">🎵 抖音 · ${esc(s.name)}</div><iframe src="https://www.douyin.com/search/${enc}" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" allowfullscreen></iframe></div>
