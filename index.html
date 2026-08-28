@@ -671,7 +671,7 @@ const SPOT_GUIDE={
   "xian-dayanta":{history:"玄奘取经归来后主持修建大雁塔，用来保存佛经；古代进士还会来这里题名，留下“雁塔题名”的典故。",fun:"数一数塔的层数，观察砖砌结构；傍晚看音乐喷泉和塔影，给全家拍一张剪影照。",food:"大雁塔周边可尝肉夹馍、葫芦鸡和陕西面食，景区人多时优先选择座位稳定的餐馆。"},
   "xian-datangbuyecheng":{history:"大唐不夜城用灯光、建筑和演艺重现盛唐长安的城市想象，街区尽头可远望大雁塔。",fun:"找不倒翁表演、盛唐密盒和“李白”互动点位；观看时站在安全区域，别拥挤追逐演员。",food:"可尝毛笔酥、肉夹馍、biangbiang面和冰峰汽水，夜游时少量多次，给老人安排休息点。"},
   "xian-shanxi-history":{history:"陕西历史博物馆汇集关中地区从远古到唐代的文物，展品让人看见古代长安与各地的交流。",fun:"寻找镶金兽首玛瑙杯、舞马衔杯银壶、皇后之玺，猜猜它们分别用什么材料制作。",food:"参观后可吃泡馍、臊子面和甑糕；博物馆预约入馆，建议先确认开放时间再安排午餐。"},
-  "xian-citywall":{history:"今天的西安城墙主要形成于明代，城墙、城门、敌楼和马面共同组成完整的防御系统。",fun:"从永宁门登城，找敌楼和垛口；可以租自行车，也可以陪爷爷奶奶走一小段看日落。",food:"城墙南门附近有肉夹馍、凉皮和饺子宴，运动后补水，别只顾着拍照忘了休息。"},
+  "xian-citywall":{history:"今天的西安城墙主要形成于明代，城墙、城门、敌楼和马面共同组成完整的防御系统。",fun:"从永宁门登城，找敌楼和垛口；可以租自行车，也可以陪爷爷奶奶走一小段看日落。",food:"城墙南门附近有肉夹馍、凉皮和饺子宴，运动后补水，别只顾着拍照忘了休息。",kiteTip:"放风筝小贴士：先确认景区当天是否允许放飞；若允许，选空旷安全位置，远离电线、树枝、城垛边和人群，风大或人多就收线不放。"},
   "xian-huiminjie":{history:"回民街所在的回坊是西安重要的回族聚居区，清真饮食和街巷生活在这里延续了很久。",fun:"去大皮院、洒金桥找不同小吃，观察香料和面食做法；进入清真寺等场所要尊重当地礼仪。",food:"羊肉泡馍、肉夹馍、甑糕和烤肉很受欢迎，选择清真餐馆，食物滚烫时先放凉。"},
   "sanmenxia-huashan":{history:"华山以花岗岩山峰和险峻山路闻名，西峰又称莲花峰；今天可乘索道欣赏高山景色。",fun:"坐索道找山脊和云海，抵达后寻找“莲花”般的岩石；山路边听从工作人员安排，不攀爬护栏。",food:"登山前后可吃面食、羊肉泡和当地烧饼，随身准备饮水与简单点心，避免空腹乘索道。"},
   "sanmenxia-hangu":{history:"函谷关是古代关隘，老子骑青牛出关、紫气东来和鸡鸣狗盗都是与这里相关的著名典故。",fun:"找关楼、古道和城墙位置，玩“谁先发现紫气”的观察游戏；景区行走注意台阶。",food:"灵宝羊肉汤、烧饼夹肉和面食适合沿途补充体力，口味偏咸时多喝水。"},
@@ -697,7 +697,7 @@ cityOrder.map(c=>{
         <div class="nm"><b>${esc(s.name)}</b><span class="stars">${"★".repeat(Math.round(s.rating))}${"☆".repeat(5-Math.round(s.rating))} ${s.rating}</span></div>
         <div class="meta"><i>📍${esc(s.city)}</i><i>⏱️${esc(s.dur)}</i><i>🎫${esc(s.price)}</i></div>
         <div class="desc">${esc(s.intro||"")}</div>
-        ${(()=>{const g=SPOT_GUIDE[s.id]||{};return `<div class="spot-guide"><div><b>📖 典故</b><span>${esc(g.history||"")}</span></div><div><b>🎲 好玩</b><span>${esc(g.fun||"")}</span></div><div><b>🍜 好吃</b><span>${esc(g.food||"")}</span></div></div>`})()}
+        ${(()=>{const g=SPOT_GUIDE[s.id]||{};return `<div class="spot-guide"><div><b>📖 典故</b><span>${esc(g.history||"")}</span></div><div><b>🎲 好玩</b><span>${esc(g.fun||"")}</span></div><div><b>🍜 好吃</b><span>${esc(g.food||"")}</span></div>${g.kiteTip?`<div><b>🪁 放风筝</b><span>${esc(g.kiteTip)}</span></div>`:""}</div>`})()}
       </div>
       <span class="go">▸</span>
     </div>
@@ -996,7 +996,7 @@ function openSpotDetail(id){
     </div>
     <button class="pspeed" onclick="cycleSpeed('${s.id}')" id="ps-${s.id}">1.0x</button>
   </div>
-  ${spotGuide?`<div class="spot-guide spot-guide-detail"><div><b>📖 典故</b><span>${esc(spotGuide.history)}</span></div><div><b>🎲 好玩</b><span>${esc(spotGuide.fun)}</span></div><div><b>🍜 好吃</b><span>${esc(spotGuide.food)}</span></div></div>`:""}
+  ${spotGuide?`<div class="spot-guide spot-guide-detail"><div><b>📖 典故</b><span>${esc(spotGuide.history)}</span></div><div><b>🎲 好玩</b><span>${esc(spotGuide.fun)}</span></div><div><b>🍜 好吃</b><span>${esc(spotGuide.food)}</span></div>${spotGuide.kiteTip?`<div><b>🪁 放风筝</b><span>${esc(spotGuide.kiteTip)}</span></div>`:""}</div>`:""}
   ${bvid?`<div class="sd-player"><div class="lb bili">📺 B站精选 · ${esc(s.name)}</div><iframe src="https://player.bilibili.com/player.html?bvid=${bvid}&autoplay=false&high_quality=1" allowfullscreen></iframe></div>
   <a style="display:block;text-align:right;font-size:12.5px;color:var(--ink-faint);margin-top:-10px;margin-bottom:14px;text-decoration:none" href="https://search.bilibili.com/all?keyword=${enc}%20旅游攻略" target="_blank" rel="noopener">查看更多B站视频 ›</a>`:""}
   <div class="sd-player"><div class="lb douyin">🎵 抖音 · ${esc(s.name)}</div><iframe src="https://www.douyin.com/search/${enc}" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" allowfullscreen></iframe></div>
