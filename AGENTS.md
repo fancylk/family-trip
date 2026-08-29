@@ -13,6 +13,14 @@
 - 不要修改 version.json 和 AGENTS.md。
 - 每次改动保持聚焦、轻量，不要大规模重构无关代码。
 
+## 部署与工作区纪律（重要，防事故）
+
+- 部署链路：改动提交并 push 到 GitHub main → astock.taoge.xyz/trip-webhook 收到通知 → 服务器跑 deploy.sh（git pull 后复制到 /var/www/trip）→ 线上 https://trip.taoge.xyz/ 更新。
+- `/home/ubuntu/trip-repo` 是部署拉取的工作区，**必须随时保持 git 干净**：
+  - 不要绕开任务流水线直接编辑 trip-repo 里的文件（包括"顺手修一下"）——遗留的未提交改动会让 git pull 中止，线上部署就此静默失效（2026-08-29 事故根因）。
+  - 任何情况下不要把改动留在工作区不管：发现来历不明的脏文件，交给流水线的自动 stash 并在回复中报告，需要的内容应在仓库里重新实现后再提交。
+- 所有内容改动一律通过乐乐任务流水线（tasks/*.task → coder worker → 自动 commit/push）进入仓库，worker 会在任务前后自动保护工作区。
+
 ## 效率与质量（重要）
 
 需求方是正在等待的小朋友，但**质量永远优先于速度**：
@@ -26,7 +34,7 @@
 
 ## 仓库速览
 
-- index.html（~1060 行）：全部页面与内联 JS；景点数据数组 SPOT_DATA（内联 JSON）、统计数字在 #p-overview 区块
+- index.html（内联 JS，约 1500 行）：全部页面与逻辑；景点数据数组 SPOTS、统计数字在 #p-overview 区块
 - scripts/narrations.js：景点讲解稿（id 与景点对应）
 - scripts/gen_tts.js：讲稿转 mp3 的脚本（部署流水线运行，AI 不要跑）
 - audio/：已生成的 mp3；新增讲稿暂无 mp3 时页面有浏览器朗读兜底
