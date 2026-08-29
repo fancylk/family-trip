@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>山河明月行 · 中秋国庆家庭自驾游</title>
 <style>
-:root{
+:root{--keyboard-inset:0px;
   --ink:#2b2620; --ink-soft:#6b6156; --ink-faint:#9a8f80;
   --paper:#f7f2e9; --card:#fffdf8; --line:#e8e0d2;
   --red:#b5432a; --red-soft:#f6e3da;
@@ -197,7 +197,7 @@ main{max-width:760px;margin:0 auto;padding:12px 16px 42px}
 /* ---------- modal ---------- */
 .mask{position:fixed;inset:0;background:rgba(30,25,18,.45);z-index:100;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(2px)}
 .mask.show{display:flex}
-.modal{background:var(--card);width:100%;max-width:560px;border-radius:22px 22px 0 0;padding:22px 20px 30px;max-height:86vh;overflow-y:auto;animation:up .25s}
+.modal{background:var(--card);width:100%;max-width:560px;border-radius:22px 22px 0 0;padding:22px 20px 30px;max-height:min(86vh,calc(100vh - var(--keyboard-inset) - 16px));margin-bottom:var(--keyboard-inset);overflow-y:auto;animation:up .25s;transition:max-height .18s ease,margin-bottom .18s ease;scroll-padding-bottom:24px}
 @keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
 .modal h3{font-size:17px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
 footer{text-align:center;padding:22px 20px 28px;color:var(--ink-faint);font-size:12.5px;line-height:2}
@@ -214,7 +214,7 @@ footer{text-align:center;padding:34px 20px 44px;color:var(--ink-faint);font-size
 .toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:rgba(40,35,26,.9);color:#fff;font-size:13.5px;padding:9px 20px;border-radius:99px;opacity:0;pointer-events:none;transition:.25s;z-index:200;white-space:nowrap}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @media (min-width:640px){
-  .modal{border-radius:22px;margin:6vh auto 0;align-self:flex-start}
+  .modal{border-radius:22px;margin:6vh auto var(--keyboard-inset);max-height:min(86vh,calc(100vh - var(--keyboard-inset) - 6vh - 16px));align-self:flex-start}
   .mask{align-items:flex-start;overflow-y:auto}
   .hero h1{font-size:40px}
 }
@@ -702,7 +702,11 @@ function navGo(e,k){
 /* =============== RENDER HELPERS =============== */
 const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),1800)}
+function syncKeyboardInset(){const vv=window.visualViewport;const inset=vv?Math.max(0,window.innerHeight-vv.height-vv.offsetTop):0;document.documentElement.style.setProperty("--keyboard-inset",inset+"px");}
+function keepFocusedFieldVisible(){const el=document.activeElement;if(!el||!el.matches("input,select,textarea")||!el.closest(".modal"))return;const vv=window.visualViewport;const inset=vv?Math.max(0,window.innerHeight-vv.height-vv.offsetTop):0;const bottom=window.innerHeight-inset-16;const r=el.getBoundingClientRect();const modal=el.closest(".modal");if(r.bottom>bottom)modal.scrollBy({top:r.bottom-bottom,behavior:"smooth"});else if(r.top<modal.getBoundingClientRect().top+12)modal.scrollBy({top:r.top-(modal.getBoundingClientRect().top+12),behavior:"smooth"});}
+syncKeyboardInset();
+if(window.visualViewport){window.visualViewport.addEventListener("resize",()=>{syncKeyboardInset();setTimeout(keepFocusedFieldVisible,60)});window.visualViewport.addEventListener("scroll",keepFocusedFieldVisible);}
+document.addEventListener("focusin",e=>{if(e.target.matches("input,select,textarea"))setTimeout(keepFocusedFieldVisible,80)});
 
 /* stars bg */
 (()=>{let h="";for(let i=0;i<40;i++){const x=Math.random()*100,y=Math.random()*55,d=(Math.random()*3).toFixed(2);h+=`<span class="star" style="left:${x}%;top:${y}%;animation-delay:${d}s"></span>`}$("#stars").innerHTML=h})();
