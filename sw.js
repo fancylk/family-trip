@@ -1,5 +1,5 @@
 /* 山河明月行 Service Worker v3 — offline-capable PWA */
-const VERSION = "trip-v1.6";
+const VERSION = "trip-v1.8";
 const CORE = "core-" + VERSION;
 const RUNTIME = "runtime-" + VERSION;
 const AUDIO_CACHE = "trip-audio-v1"; // 预下载语音共用此缓存（跨版本）

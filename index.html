@@ -154,8 +154,13 @@ main{max-width:760px;margin:0 auto;padding:12px 16px 42px}
 .food .h{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .food .h b{font-size:15.5px}
 .food .dishes{font-size:13px;color:var(--red);margin-top:7px}
-.food .row{font-size:12.5px;color:var(--ink-faint);margin-top:5px}
+.food .row{font-size:12.5px;color:var(--ink-faint);margin-top:5px;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
 .food .row i{font-style:normal;margin-right:12px}
+/* ---------- 高德一键导航 ---------- */
+.nav-chip{display:inline-flex;align-items:center;gap:3px;font-style:normal;text-decoration:none;color:var(--teal);background:var(--teal-soft);padding:2.5px 11px;border-radius:99px;font-size:12px;font-weight:600;white-space:nowrap;cursor:pointer;vertical-align:1px}
+.nav-chip:active{opacity:.6}
+.seg-nav{margin-left:auto;flex:none;display:inline-flex;align-items:center;font-style:normal;text-decoration:none;color:var(--teal);background:var(--teal-soft);padding:1.5px 10px;border-radius:99px;font-size:11.5px;font-weight:600;cursor:pointer}
+.seg-nav:active{opacity:.6}
 .hotel-r{display:flex;gap:12px;margin-bottom:11px}
 .hotel-r .ic{flex:none;width:44px;height:44px;border-radius:12px;background:var(--teal-soft);display:flex;align-items:center;justify-content:center;font-size:20px}
 .hotel-r .m{flex:1;min-width:0}
@@ -461,7 +466,7 @@ window.POETRY_GUIDE = {
 
 <footer>
   <div class="serif" style="font-size:15px;letter-spacing:.2em;color:#b09c74">但愿人长久 · 千里共婵娟</div>
-  <div style="margin-top:6px">山河明月行 · 家庭自驾手册 · v1.5 · 可安装 PWA</div>
+  <div style="margin-top:6px">山河明月行 · 家庭自驾手册 · v1.6 · 可安装 PWA</div>
 </footer>
 
 <div class="mask" id="mask"><div class="modal" id="modal"></div></div>
@@ -585,6 +590,115 @@ const HOTELS_R=[
 /* 默认待办（酒店预订清单，可编辑，localStorage 持久化） */
 const DEF_TODOS=[];
 
+/* =============== 高德一键导航 =============== */
+/* POI 坐标由 scripts/gen_pois.mjs 离线生成（高德 GCJ-02），key→[高德POI名, 经纬度]。
+   手机上一键直接调起高德App进入导航（可投车机），唤起失败回落网页版；电脑上打开高德网页版。无坐标时退化为关键词搜索。 */
+const POI={
+'nanjing-fuzimiao':['南京夫子庙','118.788899,32.020660'],
+'nanjing-zhonghuamen':['中华门瓮城','118.781810,32.013094'],
+'luoyang-longmen':['龙门石窟','112.477482,34.558727'],
+'luoyang-museum':['洛阳博物馆','112.451541,34.643323'],
+'luoyang-baimasi':['白马寺','112.605311,34.721828'],
+'luoyang-luoyi':['洛邑古城','112.485027,34.680541'],
+'luoyang-yingtianmen':['隋唐洛阳城应天门遗址博物馆','112.460805,34.675990'],
+'xian-bingmayong':['秦始皇兵马俑博物馆','109.281960,34.386214'],
+'xian-dayanta':['大雁塔','108.964176,34.218229'],
+'xian-datangbuyecheng':['大唐不夜城','108.964046,34.213866'],
+'xian-shanxi-history':['陕西历史博物馆','108.955044,34.224199'],
+'xian-citywall':['西安城墙永宁门城楼','108.947010,34.251573'],
+'xian-huiminjie':['西安鼓楼','108.943512,34.260206'],
+'sanmenxia-huashan':['华山风景名胜区游客中心','110.098064,34.538229'],
+'sanmenxia-hangu':['灵宝市函谷关历史文化旅游区','110.926788,34.632324'],
+'sanmenxia-dikengyuan':['陕州地坑院','111.138520,34.689911'],
+'sanmenxia-swan':['天鹅湖国家城市湿地公园','111.148097,34.778713'],
+'sanmenxia-guoguo':['三门峡虢国博物馆','111.210547,34.785877'],
+'sanmenxia-daba':['三门峡大坝风景区','111.344163,34.827747'],
+'kaifeng-qingminghuayuan':['清明上河园','114.340685,34.809044'],
+'kaifeng-longting':['龙亭景区','114.351130,34.811187'],
+'nanjing-laomendong':['老门东','118.787645,32.011604'],
+'laomendong':['老门东','118.787645,32.011604'],
+'shizijie':['洛阳十字街小吃一条街','112.478954,34.682918'],
+'wentang':['三门峡高阳山温泉国际度假区','111.118095,34.715115'],
+'ganshan':['甘山国家森林公园','111.222151,34.550342'],
+'longting':['龙亭景区','114.351130,34.811187'],
+'gulouyeshi':['开封市鼓楼广场','114.355889,34.793850'],
+'xiyuemiao':['华山西岳庙','110.107567,34.578768'],
+'zhuanyuanlou':['南京金陵状元楼大酒店','118.788117,32.022087'],
+'huayang':['洛阳华阳广场国际大饭店','112.407080,34.652599'],
+'hampton-xian':['西安大雁塔希尔顿欢朋酒店','108.961254,34.212308'],
+'tianehu-hotel':['天鹅湖国际大酒店','111.147910,34.792532'],
+'hanting-kaifeng':['汉庭酒店(开封清明上河园店)','114.333985,34.812491'],
+'hanting-nanjing':['汉庭酒店(南京夫子庙店)','118.786264,32.027564'],
+'hanting-luoyang':['汉庭酒店(洛阳龙门站店)','112.462720,34.604389'],
+'hanting-xian':['汉庭酒店(西安大雁塔陕西历史博物馆店)','108.955366,34.225748'],
+'7days-sanmenxia':['三门峡湖滨万达广场','111.188279,34.784541'],
+'f-nanjindapaidang':['南京大牌档(夫子庙平江府店)','118.792202,32.020798'],
+'f-yadepu':['鸭得堡老鸭粉丝汤(夫子庙店)','118.786632,32.019456'],
+'f-shuixiyuan':['洛阳水席园旗舰店','112.430308,34.658763'],
+'f-laoluoyang':['老雒阳面馆(老城店)','112.478012,34.688413'],
+'f-zhenbutong':['真不同饭店(新区店)','112.463381,34.625111'],
+'f-lingbaoyangrou':['老字号金诚羊肉馆','110.910686,34.515731'],
+'f-shidawan':['陕州地坑院民俗文化园','111.138515,34.689921'],
+'f-laomijia':['老米家大雨泡馍(回民街总店)','108.940850,34.263074'],
+'f-changandapaidang':['长安大牌档陕历博文化餐厅(小寨店)','108.947298,34.224201'],
+'f-zhangji':['子午路张记肉夹馍(翠华路店)','108.956743,34.220391'],
+'f-defachang':['德发长饺子·非遗(钟楼店)','108.945427,34.260394'],
+'f-diyilou':['第一楼(寺后街店)','114.351924,34.794059']
+};
+/* 行程段（名称与 DAYS.segs 精确对应）→ POI key */
+const SEG_NAV={
+ "老门东 → 夫子庙":"laomendong","中秋团圆晚餐":"f-nanjindapaidang","秦淮河画舫 · 赏月":"nanjing-fuzimiao",
+ "中华门瓮城晨游（可选）":"nanjing-zhonghuamen","洛阳老城十字街（可选）":"shizijie",
+ "龙门石窟":"luoyang-longmen","午餐：洛阳水席园":"f-shuixiyuan","洛阳博物馆":"luoyang-museum","应天门灯光秀":"luoyang-yingtianmen",
+ "白马寺":"luoyang-baimasi","大雁塔 · 大慈恩寺":"xian-dayanta","大唐不夜城":"xian-datangbuyecheng",
+ "陕西历史博物馆":"xian-shanxi-history","午餐：德发长饺子宴":"f-defachang","西安城墙 · 永宁门":"xian-citywall","回民街 · 大皮院":"xian-huiminjie",
+ "秦始皇兵马俑":"xian-bingmayong","华山 · 西峰索道":"sanmenxia-huashan",
+ "函谷关":"sanmenxia-hangu","午餐：灵宝羊肉汤":"f-lingbaoyangrou","陕州地坑院":"sanmenxia-dikengyuan",
+ "天鹅湖湿地晨走":"sanmenxia-swan","虢国博物馆":"sanmenxia-guoguo","三门峡大坝 · 中流砥柱":"sanmenxia-daba",
+ "陕州温塘温泉":"wentang","甘山国家森林公园（可选）":"ganshan","天鹅湖二刷 / 市区自由活动":"sanmenxia-swan",
+ "天鹅湖晨走（可选）":"sanmenxia-swan","清明上河园":"kaifeng-qingminghuayuan","鼓楼夜市":"gulouyeshi","龙亭晨游（可选）":"longting",
+ "入住南京状元楼大酒店":"zhuanyuanlou","入住洛阳华阳广场国际大饭店":"huayang","洛阳华阳广场国际大饭店":"huayang","午餐 + 酒店午休":"zhuanyuanlou","入住西安大雁塔希尔顿欢朋":"hampton-xian",
+ "入住三门峡天鹅湖国际酒店":"tianehu-hotel","入住开封酒店 + 休整":"hanting-kaifeng"};
+/* 长途驾车段 → 目的地（当天酒店/下一景点） */
+const DRV_NAV={
+ "杭州 → 南京":"zhuanyuanlou","南京 → 洛阳":"huayang","洛阳 → 西安":"hampton-xian",
+ "兵马俑 → 华山（华阴市）":"sanmenxia-huashan","华山 → 三门峡市区":"tianehu-hotel",
+ "三门峡 → 灵宝（函谷关）":"sanmenxia-hangu","灵宝 → 陕州地坑院":"sanmenxia-dikengyuan",
+ "三门峡 → 开封":"hanting-kaifeng"};
+/* 美食店名（FOODS.n）→ POI key */
+const FOOD_NAV={
+ "南京大牌档（夫子庙店）":"f-nanjindapaidang","鸭得堡老鸭汤鸭血粉丝":"f-yadepu",
+ "洛阳水席园（旗舰店）":"f-shuixiyuan","老雒阳面馆（西工店）":"f-laoluoyang","真不同饭店":"f-zhenbutong",
+ "灵宝金城羊肉馆":"f-lingbaoyangrou","地坑院民俗十大碗":"f-shidawan",
+ "老米家大雨泡馍（大皮院）":"f-laomijia","长安大排档（赛格店）":"f-changandapaidang",
+ "子午路张记肉夹馍":"f-zhangji","德发长饺子馆（钟楼店）":"f-defachang","第一楼灌汤包（寺后街总店）":"f-diyilou"};
+/* 酒店名（HOTELS_R.n）→ POI key */
+const HOTEL_NAV={
+ "汉庭酒店(南京夫子庙店)":"hanting-nanjing","汉庭酒店(洛阳龙门石窟店)":"hanting-luoyang",
+ "汉庭酒店(西安大雁塔大唐不夜城店)":"hanting-xian","7天连锁酒店(三门峡万达广场店)":"7days-sanmenxia",
+ "汉庭酒店(开封清明上河园店)":"hanting-kaifeng"};
+function segNavKey(s){return s[0]==="drive"?(DRV_NAV[s[2]]||null):(SEG_NAV[s[2]]||null)}
+function amapUrl(ll,name){
+  return ll?`https://uri.amap.com/navigation?to=${ll},${encodeURIComponent(name)}&mode=car&src=shanheyuexing&coordinate=gaode&callnative=1`
+          :`https://uri.amap.com/search?keyword=${encodeURIComponent(name)}&src=shanheyuexing&callnative=1`}
+/* 渲染期生成原生链接：用户手势直接跳转，不受弹窗拦截影响 */
+function navChip(k,cls,label){const p=POI[k];if(!p)return"";
+  return `<a class="${cls||"nav-chip"}" href="${amapUrl(p[1],p[0])}" target="_blank" rel="noopener" onclick="navGo(event,'${k}')">🧭 ${label||"导航"}</a>`}
+/* 移动端直接调起高德App进入导航（可直接投车机），不经网页；
+   App未装或唤起失败时1.5s后回落高德网页版；桌面端维持网页版路线规划 */
+function navGo(e,k){
+  if(!/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent))return;
+  const p=POI[k];if(!p||!p[1])return;
+  e.preventDefault();
+  const ll=p[1].split(","), iOS=/iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const app=(iOS?"iosamap":"androidamap")+"://navi?sourceApplication=shanheyuexing&poiname="+encodeURIComponent(p[0])+"&lat="+ll[1]+"&lon="+ll[0]+"&dev=0&style=0";
+  const t=setTimeout(()=>{if(!document.hidden)location.href=amapUrl(p[1],p[0])},1500);
+  const cancel=()=>clearTimeout(t);
+  window.addEventListener("pagehide",cancel,{once:true});
+  document.addEventListener("visibilitychange",function h(){if(document.hidden){cancel();document.removeEventListener("visibilitychange",h)}});
+  location.href=app;
+}
+
 /* =============== RENDER HELPERS =============== */
 const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
@@ -642,7 +756,7 @@ DAYS.map(d=>`
     <div class="seg ${s[0]}">
       <div class="seg-ic">${s[1]}</div>
       <div class="seg-ct">
-        <div class="h"><b>${esc(s[2])}</b><span class="dur">${esc(s[4])}</span></div>
+        <div class="h"><b>${esc(s[2])}</b><span class="dur">${esc(s[4])}</span>${(()=>{const k=segNavKey(s);return navChip(k,"seg-nav")})()}</div>
         <p>${esc(s[3])}</p>
         ${s[5]?`<div class="tip">💡 ${esc(s[5])}</div>`:""}
       </div>
@@ -695,7 +809,7 @@ cityOrder.map(c=>{
       <div class="spot-emoji">${s.emoji}</div>
       <div class="m">
         <div class="nm"><b>${esc(s.name)}</b><span class="stars">${"★".repeat(Math.round(s.rating))}${"☆".repeat(5-Math.round(s.rating))} ${s.rating}</span></div>
-        <div class="meta"><i>📍${esc(s.city)}</i><i>⏱️${esc(s.dur)}</i><i>🎫${esc(s.price)}</i></div>
+        <div class="meta"><i>📍${esc(s.city)}</i><i>⏱️${esc(s.dur)}</i><i>🎫${esc(s.price)}</i><span onclick="event.stopPropagation()">${navChip(s.id)}</span></div>
         <div class="desc">${esc(s.intro||"")}</div>
         ${(()=>{const g=SPOT_GUIDE[s.id]||{};return `<div class="spot-guide"><div><b>📖 典故</b><span>${esc(g.history||"")}</span></div><div><b>🎲 好玩</b><span>${esc(g.fun||"")}</span></div><div><b>🍜 好吃</b><span>${esc(g.food||"")}</span></div>${g.kiteTip?`<div><b>🪁 放风筝</b><span>${esc(g.kiteTip)}</span></div>`:""}</div>`})()}
       </div>
@@ -799,7 +913,7 @@ FOODS.map(f=>`
 <div class="card food">
   <div class="h"><b>${esc(f.n)}</b><span class="pill teal">${esc(f.t)}</span><span class="tiny" style="margin-left:auto">${esc(f.p)}</span></div>
   <div class="dishes">⭐ ${f.d.map(esc).join(" · ")}</div>
-  <div class="row"><i>📍 ${esc(f.a)}</i></div>
+  <div class="row"><i>📍 ${esc(f.a)}</i>${FOOD_NAV[f.n]?navChip(FOOD_NAV[f.n]):""}</div>
   <div class="tiny" style="margin-top:5px;color:var(--ink-soft)">${esc(f.tip)}</div>
 </div>`).join("")+
 `<div class="card" style="background:linear-gradient(135deg,#f2f6fa,#e8eef5);border-color:#cbd8e6;padding:16px 18px;margin-bottom:14px">
@@ -829,7 +943,7 @@ ${data.map(h => `
   <div class="ic">🏨</div>
   <div class="m">
     <b>${esc(h.n)}</b><span class="price">${esc(h.price)}</span>
-    <div class="tiny" style="margin-top:2px">📍 ${esc(h.c)}</div>
+    <div class="tiny" style="margin-top:2px">📍 ${esc(h.c)}${HOTEL_NAV[h.n]?" "+navChip(HOTEL_NAV[h.n]):""}</div>
     <div class="feat">${(h.f || []).map(x => `<span>${esc(x)}</span>`).join("")}</div>
     <div class="tiny" style="margin-top:7px;color:var(--ink-soft)">${esc(h.tip)}</div>
     ${h.real ? `<div class="tiny" style="margin-top:8px;padding-top:7px;border-top:1px dashed var(--line,#d8e0e8);color:var(--ink-soft)"><b style="color:var(--ink,#1d2a3a)">💰 实价参考（每段多家可选）</b><div style="display:flex;flex-direction:column;gap:4px;margin-top:4px">${h.real.map(r => `<div>• <b>${esc(r[0])}</b> <span style="color:#a04b3a">${esc(r[1])}</span>/晚 — ${esc(r[2])}</div>`).join("")}</div></div>` : ""}
@@ -984,7 +1098,7 @@ function openSpotDetail(id){
   $("#p-spot-detail").innerHTML=`
   <a onclick="closeSpotDetail();return false" href="#" class="sd-back">‹ 返回景点列表</a>
   <div class="sd-header"><h2>${s.emoji} ${esc(s.name)}</h2><span class="stars">${"★".repeat(Math.round(s.rating))}${"☆".repeat(5-Math.round(s.rating))}</span></div>
-  <div class="sd-meta"><i>📍 ${esc(s.city)}</i><i>⏱️ ${esc(s.dur)}</i><i>🎫 ${esc(s.price)}</i></div>
+  <div class="sd-meta"><i>📍 ${esc(s.city)}</i><i>⏱️ ${esc(s.dur)}</i><i>🎫 ${esc(s.price)}</i>${navChip(s.id,"nav-chip","导航到此").replace('class="nav-chip"','class="nav-chip" style="padding:4px 13px"')}</div>
   ${guide?`<div class="sd-poem"><div class="pt">📜 ${esc(guide.poem)}</div><div class="pv">${esc(guide.verse)}</div>${guide.note?`<div class="pn">💡 ${esc(guide.note)}</div>`:""}</div>`:""}
   <div class="player" id="pl-${s.id}" style="margin-bottom:14px">
     <button class="play-btn" onclick="playAudio('${s.id}')">
