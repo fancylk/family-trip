@@ -2,7 +2,7 @@
 const VERSION = "trip-v2.1";
 const CORE = "core-" + VERSION;
 const RUNTIME = "runtime-" + VERSION;
-const AUDIO_CACHE = "trip-audio-v1"; // 预下载语音共用此缓存（跨版本）
+const AUDIO_CACHE = "trip-audio-v2"; // 预下载语音共用此缓存（跨版本）
 
 const CORE_ASSETS = [
   "/",
