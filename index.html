@@ -243,8 +243,6 @@ footer{text-align:center;padding:34px 20px 44px;color:var(--ink-faint);font-size
 .sd-player iframe{width:100%;height:200px;border:none;display:block}
 .sd-player .lb{display:flex;align-items:center;gap:6px;padding:8px 12px;font-size:12.5px;font-weight:600;color:#fff}
 .sd-player .lb.bili{background:#fb7299}
-.sd-player .lb.douyin{background:#111}
-.sd-player .lb.xhs{background:#ff2442}
 .sd-nar{padding:14px 16px;border-radius:14px;background:#fffaf0;border:1px solid #eddfbe;font-size:14.5px;line-height:2;color:#4a4238;white-space:pre-wrap;text-align:justify;margin:14px 0}
 .sd-poem{padding:16px;border-radius:14px;background:linear-gradient(135deg,#fffaf0,#f8ecd3);border:1px solid #eddfbe;margin:14px 0;color:#4a4238}
 .sd-poem .pt{font-size:13px;color:#8a6414;margin-bottom:8px}
@@ -466,7 +464,7 @@ window.POETRY_GUIDE = {
 
 <footer>
   <div class="serif" style="font-size:15px;letter-spacing:.2em;color:#b09c74">但愿人长久 · 千里共婵娟</div>
-  <div style="margin-top:6px">山河明月行 · 家庭自驾手册 · v1.7 · 可安装 PWA</div>
+  <div style="margin-top:6px">山河明月行 · 家庭自驾手册 · v1.8 · 可安装 PWA</div>
 </footer>
 
 <div class="mask" id="mask"><div class="modal" id="modal"></div></div>
@@ -839,8 +837,6 @@ cityOrder.map(c=>{
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">
           <span class="tiny" style="color:var(--ink-faint)">📺 视频导览：</span>
           <a onclick="embedVideo('${s.id}','bili','${encodeURIComponent(s.name)}');return false" href="#" class="vl" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;background:#fb7299;color:#fff;padding:4px 11px;border-radius:99px;font-size:12px;font-weight:600">B站</a>
-          <a onclick="embedVideo('${s.id}','douyin','${encodeURIComponent(s.name)}');return false" href="#" class="vl" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;background:#111;color:#fff;padding:4px 11px;border-radius:99px;font-size:12px;font-weight:600">🎵 抖音</a>
-          <a onclick="embedVideo('${s.id}','xhs','${encodeURIComponent(s.name)}');return false" href="#" class="vl" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;background:#ff2442;color:#fff;padding:4px 11px;border-radius:99px;font-size:12px;font-weight:600">📕 小红书</a>
         </div>
         <div id="vid-${s.id}" style="display:none;width:100%;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.1);background:#f5f5f5;min-height:80px"></div>
       </div>
@@ -867,19 +863,13 @@ function embedVideo(id,platform,encodedName){
   const c=$("#vid-"+id);
   if(!c)return;
   if(c.style.display==="block"&&c.dataset.platform===platform){c.style.display="none";return}
-  let src="",msg="";
+  let src="";
   if(platform==="bili"){
     const bvid=BILI_VIDS[id];
     if(bvid){src=`https://player.bilibili.com/player.html?bvid=${bvid}&autoplay=false&high_quality=1`}
     else{window.open("https://search.bilibili.com/all?keyword="+encodedName+"%20旅游攻略","_blank");return}
-  }else if(platform==="douyin"){
-    src=`https://www.douyin.com/search/${encodedName}`;
-    msg="抖音页面可能无法直接嵌入，部分浏览器会显示空白。";
-  }else if(platform==="xhs"){
-    src=`https://www.xiaohongshu.com/search_result?keyword=${encodedName}`;
-    msg="小红书页面可能无法直接嵌入，部分浏览器会显示空白。";
   }
-  c.innerHTML=`<iframe src="${src}" style="width:100%;height:210px;border:none;border-radius:12px" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>${msg?`<div style="padding:6px 12px;text-align:center;font-size:12px;color:var(--ink-faint)">${msg}</div>`:""}`;
+  c.innerHTML=`<iframe src="${src}" style="width:100%;height:210px;border:none;border-radius:12px" allowfullscreen sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>`;
   c.style.display="block";c.dataset.platform=platform;
 }
 function toggleSpot(id){const el=$("#spot-"+id);el.classList.toggle("open");
@@ -1120,10 +1110,6 @@ function openSpotDetail(id){
   ${spotGuide?`<div class="spot-guide spot-guide-detail"><div><b>📖 典故</b><span>${esc(spotGuide.history)}</span></div><div><b>🎲 好玩</b><span>${esc(spotGuide.fun)}</span></div><div><b>🍜 好吃</b><span>${esc(spotGuide.food)}</span></div>${spotGuide.kiteTip?`<div><b>🪁 放风筝</b><span>${esc(spotGuide.kiteTip)}</span></div>`:""}</div>`:""}
   ${bvid?`<div class="sd-player"><div class="lb bili">📺 B站精选 · ${esc(s.name)}</div><iframe src="https://player.bilibili.com/player.html?bvid=${bvid}&autoplay=false&high_quality=1" allowfullscreen></iframe></div>
   <a style="display:block;text-align:right;font-size:12.5px;color:var(--ink-faint);margin-top:-10px;margin-bottom:14px;text-decoration:none" href="https://search.bilibili.com/all?keyword=${enc}%20旅游攻略" target="_blank" rel="noopener">查看更多B站视频 ›</a>`:""}
-  <div class="sd-player"><div class="lb douyin">🎵 抖音 · ${esc(s.name)}</div><iframe src="https://www.douyin.com/search/${enc}" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" allowfullscreen></iframe></div>
-  <a style="display:block;text-align:right;font-size:12.5px;color:var(--ink-faint);margin-top:-10px;margin-bottom:14px;text-decoration:none" href="https://www.douyin.com/search/${enc}" target="_blank" rel="noopener">查看更多抖音视频 ›</a>
-  <div class="sd-player"><div class="lb xhs">📕 小红书 · ${esc(s.name)}</div><iframe src="https://www.xiaohongshu.com/search_result?keyword=${enc}" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" allowfullscreen></iframe></div>
-  <a style="display:block;text-align:right;font-size:12.5px;color:var(--ink-faint);margin-top:-10px;margin-bottom:14px;text-decoration:none" href="https://www.xiaohongshu.com/search_result?keyword=${enc}" target="_blank" rel="noopener">查看更多小红书笔记 ›</a>
   ${nar?`<div class="sd-nar">${esc(nar)}</div>`:""}
   <a onclick="closeSpotDetail();return false" href="#" class="sd-back">‹ 返回景点列表</a>`;
   closeSpotDetail();
