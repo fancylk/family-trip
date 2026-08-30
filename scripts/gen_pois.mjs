@@ -47,6 +47,10 @@ const QUERIES = [
   { key: "hampton-xian",         q: "欢朋希尔顿酒店",       city: "西安",   match: "雁塔", strict: true, offset: 20 },
   { key: "tianehu-hotel",        q: "三门峡天鹅湖国际酒店", city: "三门峡", match: "天鹅湖" },
   { key: "hanting-kaifeng",      q: "汉庭酒店",             city: "开封",   match: "清明上河园" },
+  /* ---- 2026-08-30 实订酒店 ---- */
+  { key: "7days-guanghuamen",    q: "7天 御道街",           city: "南京",   match: "御道街" },
+  { key: "bolongwan-luoyang",    q: "泊龙湾酒店",           city: "洛阳",   match: "龙门石窟" },
+  { key: "yanyu-xian",           q: "雁语民宿",             city: "西安",   match: "大唐不夜城" },
   { key: "hanting-nanjing",      q: "汉庭酒店",             city: "南京",   match: "夫子庙", strict: true, offset: 20 },
   { key: "hanting-luoyang",      q: "汉庭酒店",             city: "洛阳",   match: "龙门站" },
   { key: "hanting-xian",         q: "汉庭酒店",             city: "西安",   match: "大雁塔", strict: true, offset: 20 },
@@ -68,6 +72,7 @@ const QUERIES = [
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
+// match 同时查名称与地址(如"御道街"只出现在地址里)
 async function search({ q, city, match, strict, offset = 6 }) {
   const u = new URL("https://restapi.amap.com/v3/place/text");
   u.search = new URLSearchParams({ key: KEY, keywords: q, city, citylimit: "true", offset: String(offset), page: "1", extensions: "base" });
@@ -75,7 +80,7 @@ async function search({ q, city, match, strict, offset = 6 }) {
   const j = await r.json();
   if (String(j.status) !== "1") throw new Error(j.info || "unknown");
   const pois = j.pois || [];
-  const hit = match ? pois.find(p => p.name.includes(match)) : pois[0];
+  const hit = match ? pois.find(p => p.name.includes(match) || (p.address || "").includes(match)) : pois[0];
   const pick = hit || (strict ? null : pois[0]) || null;
   return { pick, cands: pois.map(p => `${p.name} @${p.address} [${p.location}]`) };
 }
