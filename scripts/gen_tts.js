@@ -1,7 +1,7 @@
 import { narrations } from "/Users/taoge/family-trip-web/scripts/narrations.js";
 import { mkdirSync, existsSync, writeFileSync } from "node:fs";
 
-const KEY = "sk-cet71mglihqo5ox5tbgq3by9a9zgeso4gpzg4l35t3qiounm";
+const KEY = process.env.MIMO_KEY || "sk-cet71mglihqo5ox5tbgq3by9a9zgeso4gpzg4l35t3qiounm";
 const OUT = "/Users/taoge/family-trip-web/audio";
 mkdirSync(OUT, { recursive: true });
 
