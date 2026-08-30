@@ -49,6 +49,22 @@ const QUERIES = [
   { key: "hanting-kaifeng",      q: "汉庭酒店",             city: "开封",   match: "清明上河园" },
   /* ---- 2026-08-30 实订酒店 ---- */
   { key: "7days-guanghuamen",    q: "7天 御道街",           city: "南京",   match: "御道街" },
+  /* ---- 2026-08-30 一日三餐规划(早餐/正餐/服务区) ---- */
+  { key: "b-7days-nj",           q: "小笼包",  city: "南京",   match: "鼎阿公", around: "118.815951,32.025732|1500" },
+  { key: "b-nj-shaobing",        q: "烧饼",    city: "南京",   match: "大阳沟", around: "118.815951,32.025732|1500" },
+  { key: "b-longmen",            q: "牛肉汤",  city: "洛阳",   match: "龙鳞路", around: "112.484393,34.562452|5000" },
+  { key: "b-wanglou",            q: "灌汤包",  city: "开封",   match: "王楼",   around: "114.340685,34.809044|4000" },
+  { key: "b-laowang",            q: "面馆",    city: "三门峡", match: "老汪",   around: "111.188279,34.784541|1500" },
+  { key: "l-daixin",             q: "大盘鸡",  city: "西安",   match: "代鑫",   around: "109.281960,34.386214|6000" },
+  { key: "l-yushan",             q: "烩面",    city: "三门峡", match: "御膳",   around: "111.210547,34.785877|2000" },
+  { key: "l-nongjia",            q: "小碗菜",  city: "三门峡", match: "农家厨房", around: "111.118095,34.715115|3500" },
+  { key: "l-wanglong",           q: "烩面",    city: "三门峡", match: "旺龙",   around: "111.188279,34.784541|3000" },
+  { key: "sa-yixing",            q: "宜兴太湖服务区", city: "无锡", match: "宜兴太湖" },
+  { key: "sa-zhoukoudong",       q: "周口东服务区",   city: "周口",   match: "周口东" },
+  { key: "sa-mianchi",           q: "渑池服务区",     city: "三门峡", match: "霍尔果斯" },
+  { key: "sa-weinanxi",          q: "渭南西服务区",   city: "渭南",   match: "连云港" },
+  { key: "sa-gongyi",            q: "巩义服务区",     city: "郑州",   match: "连云港" },
+  { key: "sa-jiashan",           q: "嘉山服务区",     city: "滁州",   match: "嘉山" },
   { key: "bolongwan-luoyang",    q: "泊龙湾酒店",           city: "洛阳",   match: "龙门石窟" },
   { key: "yanyu-xian",           q: "雁语民宿",             city: "西安",   match: "大唐不夜城" },
   { key: "hanting-nanjing",      q: "汉庭酒店",             city: "南京",   match: "夫子庙", strict: true, offset: 20 },
@@ -73,7 +89,20 @@ const QUERIES = [
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 // match 同时查名称与地址(如"御道街"只出现在地址里)
-async function search({ q, city, match, strict, offset = 6 }) {
+async function search(it) {
+  if (it.around) {
+    const [loc, radius] = it.around.split("|");
+    const u = new URL("https://restapi.amap.com/v3/place/around");
+    u.search = new URLSearchParams({ key: KEY, location: loc, radius, keywords: it.q, offset: "8", page: "1" });
+    const r = await fetch(u);
+    const j = await r.json();
+    if (String(j.status) !== "1") throw new Error(j.info || "unknown");
+    const pois = j.pois || [];
+    const hit = it.match ? pois.find(p => p.name.includes(it.match)) : pois[0];
+    const pick = hit || (it.strict ? null : pois[0]) || null;
+    return { pick, cands: pois.map(p => `${p.name} | ${p.address} [${p.location}]`) };
+  }
+  const { q, city, match, strict, offset = 6 } = it;
   const u = new URL("https://restapi.amap.com/v3/place/text");
   u.search = new URLSearchParams({ key: KEY, keywords: q, city, citylimit: "true", offset: String(offset), page: "1", extensions: "base" });
   const r = await fetch(u);

@@ -162,6 +162,15 @@ main{max-width:760px;margin:0 auto;padding:12px 16px 42px}
 .seg-nav{margin-left:auto;flex:none;display:inline-flex;align-items:center;font-style:normal;text-decoration:none;color:var(--teal);background:var(--teal-soft);padding:1.5px 10px;border-radius:99px;font-size:11.5px;font-weight:600;cursor:pointer}
 .seg-nav:active{opacity:.6}
 .seg-meta{font-size:12px;color:var(--teal);background:var(--teal-soft);border-radius:8px;padding:4px 10px;margin-top:6px;display:inline-block}
+.meal-day{padding:14px 16px;margin-bottom:12px}
+.meal-day .mh{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.meal-day .mh b{font-size:16px;color:var(--red)}
+.meal-day .mh span{font-size:12.5px;color:var(--ink-faint)}
+.meal-row{display:flex;gap:10px;padding:8px 0;border-top:1px dashed var(--line);align-items:flex-start}
+.mic{flex:none;width:54px;text-align:center;font-size:12px;font-weight:700;color:var(--teal);background:var(--teal-soft);border-radius:8px;padding:4px 0;margin-top:2px}
+.mm{flex:1;min-width:0}
+.mm>b{font-size:14.5px}
+.mp{margin-left:8px;font-size:12px;color:var(--red);font-weight:600}
 .hotel-r{display:flex;gap:12px;margin-bottom:11px}
 .hotel-r .ic{flex:none;width:44px;height:44px;border-radius:12px;background:var(--teal-soft);display:flex;align-items:center;justify-content:center;font-size:20px}
 .hotel-r .m{flex:1;min-width:0}
@@ -465,7 +474,7 @@ window.POETRY_GUIDE = {
 
 <footer>
   <div class="serif" style="font-size:15px;letter-spacing:.2em;color:#b09c74">但愿人长久 · 千里共婵娟</div>
-  <div style="margin-top:6px">山河明月行 · 家庭自驾手册 · v1.9 · 可安装 PWA</div>
+  <div style="margin-top:6px">山河明月行 · 家庭自驾手册 · v2.0 · 可安装 PWA</div>
 </footer>
 
 <div class="mask" id="mask"><div class="modal" id="modal"></div></div>
@@ -543,6 +552,66 @@ const DAYS=[
  ["meal","🏠","到家","11天10晚，全程约2400公里，一路平安！","—",""]]},
 ];
 
+/* =============== 每日三餐安排(结合高德热门榜与行程顺路) =============== */
+const DAY_MEALS=[
+ {d:1,date:"9/25 周五 · 中秋",city:"南京",anchor:"7days-guanghuamen",meals:[
+  {t:"🌅 早",n:"杭州家中出发（车上牛奶面包）",p:"—",note:"8:00 出发，3.5小时车程"},
+  {t:"☀️ 午",k:"b-7days-nj",n:"鼎阿公杭州小笼包（酒店旁）",p:"25",note:"约12:00抵达南京，先简餐后午休"},
+  {t:"🌙 晚",k:"f-nanjindapaidang",n:"南京大牌档（夫子庙平江府店）",p:"80",note:"🥮 中秋团圆宴·古色古香有评弹，务必提前取号"}]},
+ {d:2,date:"9/26 周六",city:"南京 → 洛阳",anchor:"7days-guanghuamen",meals:[
+  {t:"🌅 早",k:"b-nj-shaobing",n:"大阳沟烧饼店（酒店旁）",p:"8",note:"烧饼+豆浆，7小时车程前垫饱"},
+  {t:"☀️ 午",k:"sa-zhoukoudong",n:"🛣️ 周口东服务区（宁洛高速）",p:"35",note:"13:00前后午餐，热食面食为主，顺路加油"},
+  {t:"🌙 晚",k:"shizijie",n:"洛阳老城十字街小吃",p:"40",note:"18:00到洛阳放行李后去；不翻汤、涮牛肚、小碗牛肉汤"}]},
+ {d:3,date:"9/27 周日",city:"洛阳",anchor:"bolongwan-luoyang",meals:[
+  {t:"🌅 早",k:"b-longmen",n:"龙鳞路第一家牛肉汤（龙门古街店）",p:"15",note:"洛阳人早餐标配：牛肉汤+饼丝，吃完直奔龙门石窟"},
+  {t:"☀️ 午",k:"f-shuixiyuan",n:"洛阳水席园旗舰店",p:"80",note:"距龙门石窟约17km；牡丹燕菜必点，清淡适口老人爱吃"},
+  {t:"🌙 晚",k:"f-zhenbutong",n:"真不同饭店（老城店）",p:"70",note:"距应天门约2km，吃完正好看灯光秀"}]},
+ {d:4,date:"9/28 周一",city:"洛阳 → 西安",anchor:"bolongwan-luoyang",meals:[
+  {t:"🌅 早",k:"b-longmen",n:"龙门古街小吃 / 酒店早餐",p:"12",note:"7:30出发去白马寺，8:30开门即入"},
+  {t:"☀️ 午",k:"sa-mianchi",n:"🛣️ 渑池服务区（连霍高速）",p:"30",note:"洛阳出发约120km，12:00前后正好午餐"},
+  {t:"🌙 晚",k:"xian-datangbuyecheng",n:"大唐不夜城街区小吃",p:"50",note:"小寨酒店步行可达；毛笔酥、街边演艺边逛边吃"}]},
+ {d:5,date:"9/29 周二",city:"西安",anchor:"yanyu-xian",meals:[
+  {t:"🌅 早",k:"f-zhangji",n:"子午路张记肉夹馍（翠华路店）",p:"15",note:"三秦套餐：肉夹馍+凉皮+冰峰，距陕历博步行约1km"},
+  {t:"☀️ 午",k:"f-defachang",n:"德发长饺子·非遗（钟楼店）",p:"100",note:"百年饺子宴，百饺百形孩子最爱"},
+  {t:"🌙 晚",k:"f-laomijia",n:"老米家大雨泡馍（回民街总店）",p:"40",note:"泡馍自己掰+甑糕镜糕，回民街逛吃到饱"}]},
+ {d:6,date:"9/30 周三",city:"西安 → 华山 → 三门峡",anchor:"yanyu-xian",meals:[
+  {t:"🌅 早",k:"f-zhangji",n:"子午路张记肉夹馍（翠华路店）二刷",p:"15",note:"出发前垫饱，兵马俑车程40分钟"},
+  {t:"☀️ 午",k:"l-daixin",n:"代鑫大盘鸡（兵马俑附近）",p:"35",note:"参观完出口即达；吃完东行赴华山"},
+  {t:"🌙 晚",k:"l-wanglong",n:"旺龙烩面（建业·壹号城邦店）",p:"25",note:"三门峡万达商圈附近，到店先吃晚饭再找酒店"}]},
+ {d:7,date:"10/1 周四 · 国庆",city:"三门峡",anchor:"7days-sanmenxia",meals:[
+  {t:"🌅 早",k:"b-laowang",n:"老汪的面馆（万达广场店）",p:"12",note:"万达商圈早餐，9:00出发赴函谷关"},
+  {t:"☀️ 午",k:"f-lingbaoyangrou",n:"灵宝金城羊肉馆",p:"50",note:"函谷关→灵宝顺路；羊肉汤+脂油烧饼"},
+  {t:"🌙 晚",k:"f-shidawan",n:"地坑院民俗十大碗",p:"55",note:"地坑院景区内；条子肉、酥肉、农家豆腐"}]},
+ {d:8,date:"10/2 周五",city:"三门峡",anchor:"7days-sanmenxia",meals:[
+  {t:"🌅 早",n:"万达商圈早餐（酒店周边）",p:"12"},
+  {t:"☀️ 午",k:"l-yushan",n:"御膳烩面馆（嘉亿广场店）",p:"25",note:"虢国博物馆旁，看完车马坑就吃"},
+  {t:"🌙 晚",n:"三门峡收官晚宴（市区豫菜馆）",p:"60",note:"建议选市区口碑豫菜馆；酒店到店再定，可到时问前台推荐"}]},
+ {d:9,date:"10/3 周六",city:"三门峡",anchor:"7days-sanmenxia",meals:[
+  {t:"🌅 早",n:"万达商圈早餐（酒店周边）",p:"12"},
+  {t:"☀️ 午",k:"l-nongjia",n:"农家厨房小碗菜（卧龙街店）",p:"30",note:"温塘温泉附近，泡完温泉正好"},
+  {t:"🌙 晚",n:"自由活动（万达商圈 / 市区夜市）",p:"40",note:"连玩几天放松一晚，按口味自由选"}]},
+ {d:10,date:"10/4 周日",city:"三门峡 → 开封",anchor:"7days-sanmenxia",meals:[
+  {t:"🌅 早",n:"万达商圈早餐（酒店周边）",p:"12",note:"9:00出发赴开封"},
+  {t:"☀️ 午",k:"sa-gongyi",n:"🛣️ 巩义服务区（连霍高速）",p:"30",note:"11:30前后午餐；郑州服务区在建，选巩义更稳"},
+  {t:"🌙 晚",k:"f-diyilou",n:"第一楼灌汤包（寺后街总店）",p:"40",note:"口诀：轻轻提、慢慢移、先开窗、后喝汤；饭后逛鼓楼夜市"}]},
+ {d:11,date:"10/5 周一",city:"开封 → 杭州",anchor:"hanting-kaifeng",meals:[
+  {t:"🌅 早",k:"b-wanglou",n:"王楼灌汤包（清明上河园店）",p:"20",note:"酒店旁，吃完龙亭晨游后出发"},
+  {t:"☀️ 午",k:"sa-jiashan",n:"🛣️ 嘉山服务区（宁洛高速）",p:"30",note:"13:00前后午餐，全天9.5小时车程"},
+  {t:"🌙 晚",n:"到家啦 🏠",p:"—",note:"18:00前后到杭州，一路平安"}]}
+];
+function distKm(a,b){if(!POI[a]||!POI[b])return null;const[x1,y1]=POI[a][1].split(",").map(Number),[x2,y2]=POI[b][1].split(",").map(Number);const r=Math.PI/180,R=6371;const q=Math.sin((y2-y1)*r/2)**2+Math.cos(y1*r)*Math.cos(y2*r)*Math.sin((x2-x1)*r/2)**2;return +(2*R*Math.asin(Math.sqrt(q))).toFixed(1)}
+function renderDayMeals(){$("#day-meals").innerHTML=DAY_MEALS.map(d=>`
+<div class="card meal-day">
+  <div class="mh"><b class="serif">DAY ${d.d}</b><span>${d.date} · ${d.city}</span></div>
+  ${d.meals.map(m=>{
+    const anchor=m.a||d.anchor;
+    const dist=(m.k&&POI[m.k]&&POI[anchor])?distKm(anchor,m.k):null;
+    const bits=[];
+    if(dist!=null&&dist<30)bits.push("距住宿点约"+dist+"km");
+    if(m.k&&m.k.indexOf("sa-")===0&&dist==null)bits.push("高速途中");
+    return `<div class="meal-row"><span class="mic">${m.t}</span><div class="mm"><b>${m.n}</b>${m.p&&m.p!=="—"?`<span class="mp">人均¥${m.p}</span>`:""}${m.k?navChip(m.k,"seg-nav"):""}${m.note?`<div class="tiny">${bits.length?bits.join(" · ")+" · ":""}${m.note}</div>`:""}</div></div>`;
+  }).join("")}
+</div>`).join("");}
 const FOODS=[
 {c:"南京",n:"南京大牌档（夫子庙店）",t:"南京菜",p:"人均80元",a:"秦淮区大石坝街48号",d:["盐水鸭","鸭血粉丝汤","天王烤鸭包","美龄粥","糖芋苗"],tip:"中秋团圆晚餐首选，古色古香有评弹；务必提前预订。"},
 {c:"南京",n:"鸭得堡老鸭汤鸭血粉丝",t:"小吃",p:"人均30元",a:"夫子庙周边多店",d:["鸭血粉丝汤","鸭油烧饼"],tip:"第二天出发前的快手早餐。"},
@@ -645,7 +714,22 @@ const POI={
  'f-diyilou':['第一楼(寺后街店)','114.351924,34.794059'],
  '7days-guanghuamen':['7天连锁酒店(南京光华门地铁站店)','118.815951,32.025732'],
  'bolongwan-luoyang':['泊龙湾酒店(洛阳龙门石窟店)','112.484393,34.562452'],
- 'yanyu-xian':['雁语民宿(西安大唐不夜城小寨地铁站店)','108.951664,34.222488']
+ 'yanyu-xian':['雁语民宿(西安大唐不夜城小寨地铁站店)','108.951664,34.222488'],
+ 'b-7days-nj':['鼎阿公杭州小笼包(南京秦淮店)','118.816475,32.024325'],
+ 'b-nj-shaobing':['大阳沟烧饼店(御道园店)','118.813452,32.026540'],
+ 'b-longmen':['龙鳞路第一家牛肉汤(龙门古街店)','112.475875,34.566525'],
+ 'b-wanglou':['王楼灌汤包(清明上河园店)','114.340406,34.807763'],
+ 'b-laowang':['老汪的面馆(三门峡万达广场店)','111.188275,34.784275'],
+ 'l-daixin':['代鑫大盘鸡','109.293302,34.392760'],
+ 'l-yushan':['御膳烩面馆(嘉亿广场店)','111.202586,34.777561'],
+ 'l-nongjia':['农家厨房小碗菜(卧龙街店)','111.103289,34.716330'],
+ 'l-wanglong':['旺龙烩面(建业·壹号城邦店)','111.188346,34.790349'],
+ 'sa-yixing':['宜兴太湖服务区(长深高速长春方向)','119.911228,31.192283'],
+ 'sa-zhoukoudong':['周口东服务区(大广高速广州方向)','114.764100,33.642678'],
+ 'sa-mianchi':['渑池服务区(连霍高速霍尔果斯方向)','111.951067,34.750369'],
+ 'sa-weinanxi':['渭南西服务区(连霍高速连云港方向)','109.401513,34.480736'],
+ 'sa-gongyi':['巩义服务区(连霍高速连云港方向)','113.025988,34.794196'],
+ 'sa-jiashan':['嘉山服务区(宁洛高速洛阳方向)','118.250964,32.535408']
  };
 /* 行程段（名称与 DAYS.segs 精确对应）→ POI key */
 const SEG_NAV={
@@ -1144,7 +1228,10 @@ function toggleScript(id){const s=$("#sc-"+id);s.style.display=s.style.display==
 function fmt(t){if(!isFinite(t))return"00:00";const m=Math.floor(t/60),s=Math.floor(t%60);return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0")}
 
 /* =============== FOOD =============== */
-$("#p-food").innerHTML=`<div class="sec-title" style="margin-top:8px"><span class="bar"></span>🍜 沿途美食（按行程顺序）</div>`+
+$("#p-food").innerHTML=`<div class="sec-title" style="margin-top:8px"><span class="bar"></span>📅 每日三餐 · 全程安排</div>
+<div class="ov-note" style="margin-bottom:10px"><span class="ic">🍽️</span><div>结合<b>高德热门榜单</b>与行程顺路程度挑选，价格为<b>人均参考</b>；点"导航"一键直达。标 🛣️ 的是高速服务区推荐。</div></div>
+<div id="day-meals"></div>
+<div class="sec-title" style="margin-top:8px"><span class="bar"></span>🍜 沿途美食（按行程顺序）</div>`+
 FOODS.map(f=>`
 <div class="card food">
   <div class="h"><b>${esc(f.n)}</b><span class="pill teal">${esc(f.t)}</span><span class="tiny" style="margin-left:auto">${esc(f.p)}</span></div>
@@ -1374,6 +1461,8 @@ $$(".tab").forEach(t=>t.onclick=()=>{
 
 /* =============== HASH ROUTE (PWA shortcuts) =============== */
 if(location.hash){const h=location.hash.slice(1);const b=document.querySelector(`.tab[data-t="${h}"]`);if(b)b.click()}
+
+renderDayMeals();
 
 /* =============== PWA INSTALL =============== */
 let deferredPrompt=null, pwaDismissed=localStorage.getItem("pwa_dismiss")==="1";
