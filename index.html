@@ -13,8 +13,6 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>山河明月行 · 中秋国庆家庭自驾游</title>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 <style>
 :root{--keyboard-inset:0px;
   --ink:#2b2620; --ink-soft:#6b6156; --ink-faint:#9a8f80;
@@ -261,102 +259,44 @@ footer{text-align:center;padding:34px 20px 44px;color:var(--ink-faint);font-size
 .sd-poem .pv{font-family:"Songti SC","STSong","Noto Serif SC","SimSun",serif;font-size:18px;line-height:2;text-align:center;white-space:pre-line;letter-spacing:.08em}
 .sd-poem .pn{font-size:12.5px;color:var(--ink-soft);line-height:1.7;margin-top:8px}
 
-/* ---------- 3D Ancient Architecture Gallery ---------- */
-.m3d-wrap{display:flex;flex-direction:column;gap:14px;margin-top:8px}
-.m3d-top-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:2px}
-.m3d-city-filter{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
-.m3d-city-filter::-webkit-scrollbar{display:none}
-.m3d-city-btn{padding:5px 13px;border-radius:99px;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);cursor:pointer;transition:.2s;white-space:nowrap}
-.m3d-city-btn.on{background:var(--night);color:#f5efe2;border-color:var(--night);font-weight:600}
-
-.m3d-layout{display:grid;grid-template-columns:220px 1fr 280px;gap:14px;align-items:start}
-@media (max-width:960px){
-  .m3d-layout{grid-template-columns:190px 1fr 240px;gap:10px}
-}
-@media (max-width:768px){
-  .m3d-layout{display:flex;flex-direction:column;gap:12px}
-}
-
-/* Left List */
-.m3d-list-col{background:var(--card);border-radius:var(--r);border:1px solid rgba(232,224,210,.6);box-shadow:var(--shadow);overflow:hidden;max-height:580px;display:flex;flex-direction:column}
-@media (max-width:768px){
-  .m3d-list-col{max-height:180px}
-}
-.m3d-list-head{padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px;font-weight:600;color:var(--ink-soft);background:#faf6ee;display:flex;align-items:center;justify-content:space-between}
-.m3d-list-body{overflow-y:auto;flex:1;padding:4px 0;scrollbar-width:thin}
-.m3d-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-left:3.5px solid transparent;cursor:pointer;transition:.18s;border-bottom:1px dashed rgba(232,224,210,.5)}
-.m3d-item:hover{background:rgba(217,154,43,.06)}
-.m3d-item.on{background:#f8ecd3;border-left-color:var(--red)}
-.m3d-item-num{font-size:11px;font-weight:700;color:var(--ink-faint);width:18px;text-align:center}
-.m3d-item.on .m3d-item-num{color:var(--red)}
-.m3d-item-icon{width:34px;height:34px;border-radius:9px;background:#f3e9d7;display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}
-.m3d-item.on .m3d-item-icon{background:#fff;box-shadow:0 2px 6px rgba(181,67,42,.15)}
-.m3d-item-info{flex:1;min-width:0}
-.m3d-item-name{font-size:13.5px;font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.m3d-item.on .m3d-item-name{color:var(--red)}
-.m3d-item-sub{font-size:11.5px;color:var(--ink-faint);margin-top:2px}
-
-/* Center Stage */
-.m3d-stage-col{position:relative;background:linear-gradient(180deg,#f2ece1 0%,#e4dcd0 100%);border-radius:var(--r);border:1px solid rgba(232,224,210,.8);box-shadow:var(--shadow);overflow:hidden;min-height:460px;height:580px;display:flex;flex-direction:column}
-@media (max-width:768px){
-  .m3d-stage-col{height:360px;min-height:360px}
-}
-.m3d-canvas-wrap{width:100%;height:100%;position:relative;cursor:grab;touch-action:none}
-.m3d-canvas-wrap:active{cursor:grabbing}
-.m3d-canvas-wrap canvas{width:100%!important;height:100%!important;display:block}
-
-/* Stage Overlays */
-.m3d-stage-top{position:absolute;top:12px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:center;pointer-events:none;z-index:2}
-.m3d-tag-pill{pointer-events:auto;display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.88);backdrop-filter:blur(6px);border:1px solid rgba(200,185,160,.5);border-radius:99px;padding:3px 10px;font-size:11.5px;color:var(--ink-soft);font-weight:600}
-.m3d-controls{position:absolute;right:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;z-index:3}
-.m3d-ctrl-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.9);backdrop-filter:blur(6px);border:1px solid rgba(200,185,160,.6);box-shadow:0 2px 8px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink);cursor:pointer;transition:.15s}
-.m3d-ctrl-btn:hover{background:#fff;transform:scale(1.06)}
-.m3d-ctrl-btn:active{transform:scale(.94)}
-.m3d-ctrl-btn.active{background:var(--red);color:#fff;border-color:var(--red)}
-
-.m3d-stage-bottom{position:absolute;bottom:14px;left:14px;right:14px;display:flex;justify-content:space-between;align-items:flex-end;pointer-events:none;z-index:2}
-.m3d-stage-title{pointer-events:auto;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);padding:9px 13px;border-radius:12px;border:1px solid rgba(200,185,160,.5);box-shadow:0 2px 10px rgba(0,0,0,.06);max-width:72%}
-.m3d-stage-title h3{font-size:17px;font-weight:700;color:var(--ink);line-height:1.2}
-.m3d-stage-title .en{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-top:2px;font-weight:600}
-.m3d-stage-index{pointer-events:auto;font-family:monospace;font-size:13px;font-weight:700;color:var(--ink-soft);background:rgba(255,255,255,.88);backdrop-filter:blur(6px);padding:5px 10px;border-radius:8px;border:1px solid rgba(200,185,160,.5)}
-.m3d-hint{position:absolute;bottom:70px;left:50%;transform:translateX(-50%);pointer-events:none;background:rgba(0,0,0,.65);color:#fff;font-size:11.5px;padding:4px 12px;border-radius:99px;animation:m3dfadeout 4.5s forwards;z-index:2}
-@keyframes m3dfadeout{0%{opacity:1}75%{opacity:1}100%{opacity:0}}
-
-/* Right Panel */
-.m3d-info-col{background:var(--card);border-radius:var(--r);border:1px solid rgba(232,224,210,.6);box-shadow:var(--shadow);padding:14px 16px;max-height:580px;overflow-y:auto;scrollbar-width:thin;display:flex;flex-direction:column;gap:12px}
-.m3d-sec-head{display:flex;align-items:center;justify-content:space-between;font-size:13.5px;font-weight:700;color:var(--ink);border-bottom:1px dashed var(--line);padding-bottom:6px}
-.m3d-sec-head span{font-size:11.5px;color:var(--ink-faint);font-weight:400}
-
-/* Multi-View Grid */
-.m3d-views-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.m3d-view-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:7px 4px;border-radius:9px;border:1px solid var(--line);background:#faf6ee;cursor:pointer;transition:.15s;font-size:11.5px;color:var(--ink-soft)}
-.m3d-view-btn .v-ic{font-size:15px}
-.m3d-view-btn:hover{background:#f2ebd9}
-.m3d-view-btn.on{background:var(--teal-soft);color:var(--teal);border-color:var(--teal);font-weight:600}
-
-/* Info Table */
-.m3d-table{display:grid;gap:6px;font-size:12.5px;line-height:1.6}
-.m3d-table-row{display:grid;grid-template-columns:46px 1fr;gap:6px;align-items:baseline;padding:3px 0;border-bottom:1px dashed rgba(232,224,210,.5)}
-.m3d-table-row:last-child{border-bottom:none}
-.m3d-table-k{color:var(--ink-faint);font-weight:600}
-.m3d-table-v{color:var(--ink)}
-
-/* Story Card */
-.m3d-story-card{background:#fffaf0;border-radius:12px;border:1px solid #eddfbe;padding:11px 12px;font-size:13px;line-height:1.8;color:#4a4238}
-.m3d-story-title{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--red);margin-bottom:4px}
-.m3d-story-p{text-align:justify;margin-bottom:6px}
-.m3d-story-p:last-child{margin-bottom:0}
-
-/* Actions in Right Panel */
-.m3d-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
-.m3d-action-btn{flex:1;min-width:90px;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:7px 10px;border-radius:9px;font-size:12px;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:.15s}
-.m3d-action-btn.primary{background:linear-gradient(135deg,#e8b95a,#d49430);color:#221500}
-.m3d-action-btn.secondary{background:var(--teal-soft);color:var(--teal)}
-.m3d-action-btn:active{transform:scale(.96)}
-
 /* Spot Badge in list */
 .spot-3d-btn{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:#8a6414;background:linear-gradient(135deg,#fdf6e2,#f7e6be);border:1px solid #e3cb98;padding:2.5px 9px;border-radius:99px;cursor:pointer;margin-left:6px;text-decoration:none;vertical-align:1px}
 .spot-3d-btn:active{opacity:.7}
+
+/* Curated real-model gallery */
+.real3d-shell{display:grid;grid-template-columns:minmax(190px,230px) minmax(0,1fr);gap:14px;align-items:start}
+.real3d-list{display:grid;gap:9px}
+.real3d-choice{width:100%;display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:9px;padding:11px;text-align:left;border:1px solid var(--line);border-radius:13px;background:var(--card);color:var(--ink);cursor:pointer;box-shadow:0 2px 10px rgba(48,38,24,.04);transition:.18s}
+.real3d-choice:hover{border-color:#d7ba7d;transform:translateY(-1px)}
+.real3d-choice.on{border-color:var(--gold);background:linear-gradient(135deg,#fffaf0,#f8ecd3);box-shadow:0 5px 18px rgba(217,154,43,.14)}
+.real3d-choice .ic{width:40px;height:40px;border-radius:11px;background:#f1e7d6;display:grid;place-items:center;font-size:21px}
+.real3d-choice b{display:block;font-size:13.5px;line-height:1.35}
+.real3d-choice small{display:block;margin-top:3px;color:var(--ink-faint);font-size:11.5px}
+.real3d-choice .arrow{color:var(--gold);font-size:18px}
+.real3d-viewer{min-width:0;background:#17191c;border-radius:18px;overflow:hidden;box-shadow:0 12px 34px rgba(29,25,20,.18)}
+.real3d-frame-wrap{position:relative;aspect-ratio:16/10;min-height:400px;background:radial-gradient(circle at 50% 35%,#3b4046,#141619 72%)}
+.real3d-frame{width:100%;height:100%;border:0;display:block}
+.real3d-loading{position:absolute;inset:0;display:grid;place-items:center;color:#f4ead7;font-size:13px;letter-spacing:.04em;pointer-events:none}
+.real3d-loading.hide{display:none}
+.real3d-caption{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:13px 15px;color:#f7f1e7;background:#202328}
+.real3d-caption h3{font-size:17px;line-height:1.35}
+.real3d-caption p{margin-top:4px;color:#bfc2c5;font-size:11.5px}
+.real3d-source{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:7px 11px;border:1px solid #5a5e63;border-radius:99px;color:#f4d28f;text-decoration:none;font-size:12px;white-space:nowrap}
+.real3d-guide{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.real3d-guide-card{padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:var(--card);font-size:13.5px;line-height:1.8;color:var(--ink-soft)}
+.real3d-guide-card b{display:block;margin-bottom:4px;color:var(--ink);font-size:14px}
+.real3d-trust{display:flex;align-items:flex-start;gap:9px;padding:11px 13px;margin-bottom:12px;border-radius:13px;background:var(--teal-soft);color:#285654;font-size:13px;line-height:1.65}
+@media (max-width:768px){
+  .real3d-shell{display:flex;flex-direction:column}
+  .real3d-list{width:100%;display:flex;overflow-x:auto;padding:2px 1px 7px;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .real3d-list::-webkit-scrollbar{display:none}
+  .real3d-choice{min-width:210px;scroll-snap-align:start}
+  .real3d-viewer{width:100%;border-radius:15px}
+  .real3d-frame-wrap{min-height:0;aspect-ratio:4/3}
+  .real3d-caption{grid-template-columns:1fr}
+  .real3d-source{justify-self:start}
+  .real3d-guide{grid-template-columns:1fr}
+}
 </style>
 <script>
 window.POETRY_GUIDE = {
@@ -1144,7 +1084,7 @@ $("#p-overview").innerHTML=`
   <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px">
     <span class="pill">👴👵 两位70岁老人：每天有午休、免票多</span>
     <span class="pill teal">👧 10岁小主人：22段语音故事导览</span>
-    <span class="pill" style="cursor:pointer;background:var(--gold-soft);color:#8a6414" onclick="showPage('models3d')">🏛️ 10大古建：3D 动态交互建模</span>
+    <span class="pill" style="cursor:pointer;background:var(--gold-soft);color:#8a6414" onclick="showPage('models3d')">🏛️ 3处古迹：真实 3D 漫游</span>
     <span class="pill red">🚗 自驾节奏：单日最长9.5h·双驾轮换</span>
   </div>
 </div>
@@ -1187,9 +1127,7 @@ DAYS.map(d=>`
 function toggleDay(el){el.parentElement.classList.toggle("open")}
 
 const MODELS_3D_SET = new Set([
-  "xian-dayanta", "luoyang-longmen", "xian-bingmayong", "xian-citywall",
-  "luoyang-yingtianmen", "nanjing-zhonghuamen", "sanmenxia-dikengyuan",
-  "kaifeng-longting", "kaifeng-qingminghuayuan", "nanjing-fuzimiao"
+  "xian-dayanta", "luoyang-longmen", "luoyang-baimasi"
 ]);
 function has3DModel(spotId){ return MODELS_3D_SET.has(spotId); }
 
@@ -1519,6 +1457,7 @@ $("#mask").addEventListener("click",e=>{if(e.target.id==="mask")closeModal()});
 loadTodos();
 
 /* =============== 3D ANCIENT ARCHITECTURE GALLERY =============== */
+// 只展示可追溯的现成模型，不再用基础几何体拼接“仿古建”。
 const MODELS_3D = [
   {
     id: "xian-dayanta",
@@ -1526,903 +1465,98 @@ const MODELS_3D = [
     name: "大雁塔 · 大慈恩寺",
     enName: "Giant Wild Goose Pagoda",
     city: "西安",
-    category: "砖塔",
-    tag: "西安 · 砖塔",
     emoji: "🗼",
-    year: "唐永徽三年 (652年)",
-    structure: "方形仿木结构楼阁式七层砖塔 (高64.5米)",
-    material: "磨光青砖、黄土白灰砂浆、榫卯木枋",
-    form: "平面正方形，逐层收分，每层四面各设砖砌券门",
-    protect: "全国重点文物保护单位 · 世界文化遗产 (2014)",
-    story: "【玄奘亲督的千年奇迹】大雁塔是玄奘法师为妥善珍藏从天竺带回的梵文贝叶经与舍利佛像而亲自主持设计修建的。\n\n【不用一钉的抗震智慧】整座塔全靠磨砖对缝与仿木砖砌斗拱出檐，经历千年来唐大中地震、明嘉靖8级大地震等数十次强烈地震，周边建筑尽毁而大雁塔依然巍然挺立，展现了盛唐工匠无与伦比的力学智慧！",
-    views: {
-      front: { pos: [0, 8, 24], target: [0, 6, 0], name: "正面" },
-      side: { pos: [24, 8, 0], target: [0, 6, 0], name: "侧面" },
-      back: { pos: [0, 8, -24], target: [0, 6, 0], name: "背面" },
-      top: { pos: [14, 26, 18], target: [0, 4, 0], name: "俯瞰" }
-    }
+    embedId: "b4639f2800db4e35acb451a225d4255d",
+    author: "香港恒生大学佛学文献翻译研究中心",
+    sourceUrl: "https://sketchfab.com/3d-models/giant-wild-goose-pagoda-b4639f2800db4e35acb451a225d4255d",
+    sourceLabel: "高校文化遗产模型",
+    year: "始建于唐永徽三年（652年）",
+    focus: "先绕塔一周，看七层塔身怎样逐层收分；再抬高视角，观察方形平面与四面券门。",
+    story: "玄奘法师为保存从天竺带回的经卷与佛像，亲自主持修建大雁塔。模型由高校佛学文献研究团队制作，适合出发前先认清这座盛唐地标的整体轮廓。"
   },
   {
     id: "luoyang-longmen",
     spotId: "luoyang-longmen",
-    name: "龙门石窟 · 奉先寺",
-    enName: "Longmen Grottoes Fengxian",
+    name: "龙门石窟 · 伊河西山",
+    enName: "Longmen Grottoes",
     city: "洛阳",
-    category: "石窟",
-    tag: "洛阳 · 石窟",
     emoji: "🛕",
-    year: "唐高宗上元二年 (675年)",
-    structure: "依山开凿摩崖石刻造像群大龛",
-    material: "天然伊水两岸龙门山石灰岩",
-    form: "一佛二弟子二菩萨二天王二力士九尊主像格局",
-    protect: "全国重点文物保护单位 · 世界文化遗产 (2000)",
-    story: "【东方蒙娜丽莎的微笑】主尊卢舍那大佛高达17.14米，头部高4米，耳朵长达1.9米。相传武则天曾捐出两万贯‘脂粉钱’助建大佛，大佛面部丰满安详，嘴角微翘含笑，兼具帝王威仪与母性慈悲。\n\n【绝壁开窟的天工造化】奉先寺依伊阙山绝壁整石凿成，东西宽36米、南北长41米，历经1300余年风雨依然气势磅礴，是中国盛唐雕塑艺术的最高巅峰。",
-    views: {
-      front: { pos: [0, 7, 22], target: [0, 5, 0], name: "正面" },
-      side: { pos: [20, 6, 12], target: [0, 5, 0], name: "侧面" },
-      back: { pos: [0, 20, 20], target: [0, 5, 0], name: "俯瞰" },
-      top: { pos: [0, 2, 16], target: [0, 7, 0], name: "仰望" }
-    }
+    embedId: "300cedb03eb4494991d34acebf91eda0",
+    author: "LibanCiel",
+    sourceUrl: "https://sketchfab.com/3d-models/luoyang-longmen-grottoes-china-300cedb03eb4494991d34acebf91eda0",
+    sourceLabel: "实景摄影测量模型",
+    year: "北魏至唐代持续营造",
+    focus: "先拉远看石窟沿崖壁展开的尺度，再贴近寻找密集的小龛；真实游览时就更容易理解“千龛一壁”。",
+    story: "这不是电脑凭空画出的山崖，而是用大量实景照片重建的三维表面。龙门两山夹伊河，窟龛沿石灰岩崖壁绵延，模型最适合帮助乐乐提前建立空间感。"
   },
   {
-    id: "xian-bingmayong",
-    spotId: "xian-bingmayong",
-    name: "秦始皇兵马俑 · 军阵",
-    enName: "Terracotta Army",
-    city: "西安",
-    category: "军阵",
-    tag: "西安 · 军阵",
-    emoji: "🧱",
-    year: "秦始皇时期 (约公元前246-前208年)",
-    structure: "地下坑道式夯土木构地下作战军阵",
-    material: "临潼当地红黏土陶塑、天然生漆矿物彩绘",
-    form: "前锋、主力、侧翼、后卫各兵种严密作战阵型",
-    protect: "全国重点文物保护单位 · 世界文化遗产 (1987)",
-    story: "【八千勇士千人千面】兵马俑被誉为‘世界第八大奇迹’。工匠们采用分段模塑与纯手工精细刻画，眉毛、发髻、胡须、胡结、铠甲甲片无一重复，生动展现了大秦将士的雄武风采。\n\n【大秦地下重装军团】一号坑长230米、宽62米，排列着步兵与战车主力军阵；出土的青铜剑历经2200年依然锋利如新，是古代冶金与陶艺科技的传奇。",
-    views: {
-      front: { pos: [0, 6, 18], target: [0, 4, 0], name: "正面" },
-      side: { pos: [18, 6, 0], target: [0, 4, 0], name: "侧面" },
-      back: { pos: [0, 6, -18], target: [0, 4, 0], name: "背面" },
-      top: { pos: [12, 22, 14], target: [0, 2, 0], name: "俯瞰" }
-    }
-  },
-  {
-    id: "xian-citywall",
-    spotId: "xian-citywall",
-    name: "西安城墙 · 永宁门",
-    enName: "Yongning Gate & Wall",
-    city: "西安",
-    category: "城门",
-    tag: "西安 · 城门",
-    emoji: "🏯",
-    year: "隋唐安上门 / 明洪武七年 (1374年)",
-    structure: "闸楼、箭楼、主城楼三楼一体，带月城与瓮城",
-    material: "夯土核心、明代特制大青砖、糯米石灰浆",
-    form: "重檐歇山顶城楼、马面、敌楼、多孔射击箭窗",
-    protect: "全国重点文物保护单位 (1961)",
-    story: "【中国现存最完整古城垣】西安城墙周长13.74公里，城墙底宽18米、顶宽15米，厚度大于高度，四辆马车可并排飞驰。\n\n【古代冷兵器防御极致】永宁门设有瓮城与月城，战时诱敌入瓮，关门分段歼灭；城砖上烧刻着每位督造官与工匠姓名，严苛的‘质量责任制’让城墙六百年不倒。",
-    views: {
-      front: { pos: [0, 9, 26], target: [0, 6, 0], name: "正面" },
-      side: { pos: [26, 9, 0], target: [0, 6, 0], name: "侧面" },
-      back: { pos: [0, 9, -26], target: [0, 6, 0], name: "背面" },
-      top: { pos: [16, 28, 18], target: [0, 4, 0], name: "俯瞰" }
-    }
-  },
-  {
-    id: "luoyang-yingtianmen",
-    spotId: "luoyang-yingtianmen",
-    name: "应天门 · 隋唐宫门",
-    enName: "Yingtian Gate Palace",
+    id: "luoyang-baimasi",
+    spotId: "luoyang-baimasi",
+    name: "白马寺 · 齐云塔",
+    enName: "Qiyun Pagoda, White Horse Temple",
     city: "洛阳",
-    category: "宫门",
-    tag: "洛阳 · 宫门",
-    emoji: "✨",
-    year: "隋大业元年 (605年) / 盛唐复建",
-    structure: "凹字形双向三出阙、双向飞桥、中央主门楼",
-    material: "巨型木结构框架、夯土台基、黄色琉璃瓦",
-    form: "天下第一门：中央城楼两侧以飞桥凌空连接阙楼",
-    protect: "全国重点文物保护单位 · 隋唐洛阳城国家遗址公园",
-    story: "【天下第一门的恢弘格局】应天门是隋唐两京规格最高的城门，高大雄浑。其‘双向三出阙’是古代帝王最高礼仪象征，武则天在此登基称帝并接见万国来朝使臣。\n\n【凌空飞桥与重檐阙楼】两侧阙楼如凤鸟展翼，以两条优美的飞桥与主城楼凌空相接，开创了中国皇宫‘门阙一体’建筑典范。",
-    views: {
-      front: { pos: [0, 10, 28], target: [0, 6, 0], name: "正面" },
-      side: { pos: [28, 8, 10], target: [0, 6, 0], name: "侧面" },
-      back: { pos: [0, 10, -28], target: [0, 6, 0], name: "背面" },
-      top: { pos: [18, 30, 20], target: [0, 4, 0], name: "俯瞰" }
-    }
-  },
-  {
-    id: "nanjing-zhonghuamen",
-    spotId: "nanjing-zhonghuamen",
-    name: "中华门瓮城",
-    enName: "Zhonghuamen Castle",
-    city: "南京",
-    category: "瓮城",
-    tag: "南京 · 瓮城",
-    emoji: "🏯",
-    year: "明洪武十九年 (1386年)",
-    structure: "三道瓮城、四道券门、二十七座藏兵洞",
-    material: "特制铭文城砖、桐油石灰糯米浆",
-    form: "复合纵深防御型城堡要塞 (天下第一瓮城)",
-    protect: "全国重点文物保护单位 (1988)",
-    story: "【天下第一瓮城的关门打狗】中华门又名聚宝门，设三道瓮城。敌人一旦攻入，守军降下重达千斤的巨型铁闸，敌军瞬间被分割在各道瓮城中，守军从城墙上方居高临下围歼！\n\n【二十七洞伏兵三千】城内设有27个巨大的砖拱藏兵洞，战时可驻扎精兵3000人、储粮万石，是世界现存结构最复杂的古代要塞。",
-    views: {
-      front: { pos: [0, 10, 26], target: [0, 5, 0], name: "正面" },
-      side: { pos: [26, 10, 0], target: [0, 5, 0], name: "侧面" },
-      back: { pos: [0, 10, -26], target: [0, 5, 0], name: "背面" },
-      top: { pos: [16, 28, 16], target: [0, 3, 0], name: "俯瞰" }
-    }
-  },
-  {
-    id: "sanmenxia-dikengyuan",
-    spotId: "sanmenxia-dikengyuan",
-    name: "陕州地坑院",
-    enName: "Dikengyuan Sunken Courtyard",
-    city: "三门峡",
-    category: "民居",
-    tag: "三门峡 · 民居",
-    emoji: "🕳️",
-    year: "汉唐定型延续至今四千余年",
-    structure: "下沉式天井院落 + 崖壁拱券窑洞",
-    material: "原生黄土塬层、青砖门额、木格门窗",
-    form: "‘进村不见房，见树不见村’的地下四合院",
-    protect: "国家级非物质文化遗产 (2011)",
-    story: "【地下四合院的天然恒温】在平坦黄土高原上向下深挖6至7米方坑，再在四壁掏凿窑洞。黄土极佳的保温隔热性能使屋内常年保持10℃~20℃，冬暖夏凉宛如天然空调！\n\n【生态雨水智慧】院中挖有几米深的渗水坑（旱井），暴雨时雨水迅速下渗排入地下，既防涝又保水，是古人顺应自然的伟大居住智慧。",
-    views: {
-      front: { pos: [0, 12, 22], target: [0, -2, 0], name: "正面" },
-      side: { pos: [22, 12, 0], target: [0, -2, 0], name: "侧面" },
-      back: { pos: [0, 12, -22], target: [0, -2, 0], name: "背面" },
-      top: { pos: [0, 28, 4], target: [0, -3, 0], name: "俯瞰" }
-    }
-  },
-  {
-    id: "kaifeng-longting",
-    spotId: "kaifeng-longting",
-    name: "龙亭大殿",
-    enName: "Longting Imperial Pavilion",
-    city: "开封",
-    category: "殿堂",
-    tag: "开封 · 殿堂",
-    emoji: "🐉",
-    year: "六朝皇宫遗址 / 清康熙三十一年 (1692年)",
-    structure: "13米高砖石巨型台基 + 重檐歇山顶木构大殿",
-    material: "楠木大梁、黄琉璃瓦、汉白玉九龙云海御道石",
-    form: "坐北朝南高台宫殿，72级御道石阶，前临潘杨二湖",
-    protect: "全国重点文物保护单位 (2019)",
-    story: "【宋金皇宫高台上的王者之殿】龙亭建于北宋皇宫核心遗址的13米高台基之上。殿前有72级陡峭石阶（象征七十二地煞），中央整石雕刻着九条巨龙腾云驾雾。\n\n【潘杨二湖清浊辨忠奸】登殿远眺，东面潘家湖水浑（传为奸相潘仁美所居），西面杨家湖水清（传为忠臣杨家将所居），湖水相通却清浊分明，寄托百姓爱憎。",
-    views: {
-      front: { pos: [0, 10, 26], target: [0, 6, 0], name: "正面" },
-      side: { pos: [26, 10, 0], target: [0, 6, 0], name: "侧面" },
-      back: { pos: [0, 10, -26], target: [0, 6, 0], name: "背面" },
-      top: { pos: [16, 28, 18], target: [0, 4, 0], name: "俯瞰" }
-    }
-  },
-  {
-    id: "kaifeng-qingminghuayuan",
-    spotId: "kaifeng-qingminghuayuan",
-    name: "清明上河园 · 拂云阁与虹桥",
-    enName: "Fuyun Pavilion & Rainbow Bridge",
-    city: "开封",
-    category: "楼阁",
-    tag: "开封 · 楼阁",
-    emoji: "🏯",
-    year: "依据北宋张择端《清明上河图》与《营造法式》复原",
-    structure: "叠梁木拱单孔桥 + 三层重檐攒尖临水阁楼",
-    material: "巨型实木构架、飞檐翘角、青绿琉璃瓦",
-    form: "宋代汴京水陆枢纽：虹桥飞跨汴河，拂云阁耸立湖畔",
-    protect: "国家AAAAA级旅游景区 · 宋代营造法式复原典范",
-    story: "【中国古代编木拱桥巅峰】虹桥全桥无一根桥墩立柱，由粗大圆木纵横交错、互相咬合搭接而成，靠自重锁定跨度达数十米，如彩虹横跨汴河。\n\n【拂云阁的宋韵轻灵】拂云阁高31.99米，三层重檐，采用宋代《营造法式》之飞檐挑角，轻盈欲飞，重现千年前繁华北宋的清雅美学。",
-    views: {
-      front: { pos: [0, 9, 26], target: [0, 5, 0], name: "正面" },
-      side: { pos: [26, 9, 0], target: [0, 5, 0], name: "侧面" },
-      back: { pos: [0, 9, -26], target: [0, 5, 0], name: "背面" },
-      top: { pos: [16, 28, 18], target: [0, 4, 0], name: "俯瞰" }
-    }
-  },
-  {
-    id: "nanjing-fuzimiao",
-    spotId: "nanjing-fuzimiao",
-    name: "夫子庙 · 大成殿",
-    enName: "Confucius Temple Dacheng Hall",
-    city: "南京",
-    category: "殿堂",
-    tag: "南京 · 殿堂",
-    emoji: "🏮",
-    year: "宋景祐元年 (1034年)",
-    structure: "重檐九脊歇山顶古建大殿",
-    material: "朱红大柱、黄绿琉璃瓦、花岗石台基",
-    form: "前有棂星门、泮池、大成门，后有尊经阁",
-    protect: "全国重点文物保护单位 (南京夫子庙建筑群)",
-    story: "【金陵文脉的千年圣殿】大成殿是夫子庙核心，‘大成’取自《孟子》‘孔子之谓集大成’。殿前有全中国最长的照壁（110米），飞檐翘角与秦淮水色交相辉映。\n\n【六朝粉黛与儒学光芒】殿宇朱梁碧瓦，雕梁画栋，历经东晋学宫、宋代太学与明清江南贡院，见证了中华两千余年尊师重道的崇高文脉。",
-    views: {
-      front: { pos: [0, 8, 22], target: [0, 4, 0], name: "正面" },
-      side: { pos: [22, 8, 0], target: [0, 4, 0], name: "侧面" },
-      back: { pos: [0, 8, -22], target: [0, 4, 0], name: "背面" },
-      top: { pos: [14, 24, 16], target: [0, 3, 0], name: "俯瞰" }
-    }
+    emoji: "⛩️",
+    embedId: "27e31859ca9f4167ac409d652ad84d6e",
+    author: "香港恒生大学佛学文献翻译研究中心",
+    sourceUrl: "https://sketchfab.com/3d-models/qiyun-pagoda-white-horse-temple-27e31859ca9f4167ac409d652ad84d6e",
+    sourceLabel: "高校文化遗产模型",
+    year: "现塔重建于金大定十五年（1175年）",
+    focus: "数一数十三层密檐，观察塔身从下到上均匀内收的节奏，再找找第一层南面的拱门。",
+    story: "齐云塔在白马寺山门外东南侧，又叫释迦舍利塔。今天看到的是金代砖塔，也是白马寺“中国第一古刹”故事中很容易被忽略、却非常值得细看的古迹。"
   }
 ];
 
 let current3DId = "xian-dayanta";
-let current3DCity = "全部";
-let current3DView = "front";
-let autoRotate3D = true;
-let wireframe3D = false;
-let is3DInited = false;
 
-let scene3D, camera3D, renderer3D, controls3D, modelGroup3D;
-let camTween = { active: false, startPos: null, endPos: null, startTarget: null, endTarget: null, startTime: 0, dur: 600 };
-
-function init3DViewer(){
-  const wrap = $("#m3d-canvas-wrap");
-  if(!wrap || is3DInited) return;
-
-  if(typeof THREE === "undefined"){
-    wrap.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:var(--ink-soft);padding:20px;text-align:center">
-      <div style="font-size:36px;margin-bottom:8px">🏛️</div>
-      <b>3D 渲染组件加载中…</b>
-      <span class="tiny" style="margin-top:4px">请确保网络畅通，或稍后刷新重试</span>
-    </div>`;
-    return;
-  }
-
-  is3DInited = true;
-  wrap.innerHTML = "";
-
-  const w = wrap.clientWidth || 400;
-  const h = wrap.clientHeight || 460;
-
-  scene3D = new THREE.Scene();
-
-  camera3D = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
-  camera3D.position.set(0, 8, 24);
-
-  renderer3D = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-  renderer3D.setSize(w, h);
-  renderer3D.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-  renderer3D.shadowMap.enabled = true;
-  renderer3D.shadowMap.type = THREE.PCFSoftShadowMap;
-  wrap.appendChild(renderer3D.domElement);
-
-  // Lighting
-  const ambientLight = new THREE.AmbientLight(0xfff5e6, 1.2);
-  scene3D.add(ambientLight);
-
-  const hemiLight = new THREE.HemisphereLight(0xffffff, 0xd0c4b0, 0.8);
-  hemiLight.position.set(0, 50, 0);
-  scene3D.add(hemiLight);
-
-  const sunLight = new THREE.DirectionalLight(0xffeedd, 1.6);
-  sunLight.position.set(20, 35, 20);
-  sunLight.castShadow = true;
-  sunLight.shadow.mapSize.width = 1024;
-  sunLight.shadow.mapSize.height = 1024;
-  sunLight.shadow.camera.near = 0.5;
-  sunLight.shadow.camera.far = 100;
-  const d = 25;
-  sunLight.shadow.camera.left = -d;
-  sunLight.shadow.camera.right = d;
-  sunLight.shadow.camera.top = d;
-  sunLight.shadow.camera.bottom = -d;
-  scene3D.add(sunLight);
-
-  const fillLight = new THREE.DirectionalLight(0xaad5ff, 0.6);
-  fillLight.position.set(-20, 15, -20);
-  scene3D.add(fillLight);
-
-  // Pedestal Studio Floor
-  const floorGeo = new THREE.CylinderGeometry(20, 22, 1, 48);
-  const floorMat = new THREE.MeshStandardMaterial({ color: 0xdfd7ca, roughness: 0.9, metalness: 0.1 });
-  const floor = new THREE.Mesh(floorGeo, floorMat);
-  floor.position.y = -0.5;
-  floor.receiveShadow = true;
-  scene3D.add(floor);
-
-  // Subtle floor ring
-  const ringGeo = new THREE.RingGeometry(20.1, 21.2, 48);
-  const ringMat = new THREE.MeshBasicMaterial({ color: 0xc8bda8, side: THREE.DoubleSide });
-  const ring = new THREE.Mesh(ringGeo, ringMat);
-  ring.rotation.x = -Math.PI / 2;
-  ring.position.y = 0.02;
-  scene3D.add(ring);
-
-  // Controls
-  if(typeof THREE.OrbitControls !== "undefined"){
-    controls3D = new THREE.OrbitControls(camera3D, renderer3D.domElement);
-    controls3D.enableDamping = true;
-    controls3D.dampingFactor = 0.06;
-    controls3D.maxPolarAngle = Math.PI / 2 + 0.04;
-    controls3D.minDistance = 6;
-    controls3D.maxDistance = 65;
-    controls3D.target.set(0, 5, 0);
-  }
-
-  modelGroup3D = new THREE.Group();
-  scene3D.add(modelGroup3D);
-
-  build3DModel(MODELS_3D.find(m => m.id === current3DId) || MODELS_3D[0]);
-
-  window.addEventListener("resize", resize3DViewer);
-  animate3D();
-}
-
-function resize3DViewer(){
-  const wrap = $("#m3d-canvas-wrap");
-  if(!wrap || !renderer3D || !camera3D) return;
-  const w = wrap.clientWidth || 400;
-  const h = wrap.clientHeight || 460;
-  camera3D.aspect = w / h;
-  camera3D.updateProjectionMatrix();
-  renderer3D.setSize(w, h);
-}
-
-function animate3D(time){
-  requestAnimationFrame(animate3D);
-
-  // Camera tween interpolation
-  if(camTween.active && time){
-    const elapsed = time - camTween.startTime;
-    const progress = Math.min(elapsed / camTween.dur, 1);
-    const ease = progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress; // easeInOutQuad
-    camera3D.position.lerpVectors(camTween.startPos, camTween.endPos, ease);
-    if(controls3D){
-      controls3D.target.lerpVectors(camTween.startTarget, camTween.endTarget, ease);
-    }
-    if(progress >= 1){
-      camTween.active = false;
-    }
-  }
-
-  if(controls3D){
-    if(autoRotate3D && !camTween.active){
-      modelGroup3D.rotation.y += 0.005;
-    }
-    controls3D.update();
-  }
-
-  if(renderer3D && scene3D && camera3D){
-    renderer3D.render(scene3D, camera3D);
-  }
-}
-
-// Procedural Geometry Construction for Ancient Chinese Landmarks
-function build3DModel(item){
-  if(!modelGroup3D) return;
-  while(modelGroup3D.children.length > 0){
-    const obj = modelGroup3D.children[0];
-    modelGroup3D.remove(obj);
-    if(obj.geometry) obj.geometry.dispose();
-  }
-  modelGroup3D.rotation.set(0, 0, 0);
-
-  const wf = wireframe3D;
-  const M = {
-    gold: new THREE.MeshStandardMaterial({ color: 0xd99a2b, roughness: 0.35, metalness: 0.25, wireframe: wf }),
-    blue: new THREE.MeshStandardMaterial({ color: 0x244f7d, roughness: 0.4, metalness: 0.2, wireframe: wf }),
-    green: new THREE.MeshStandardMaterial({ color: 0x2d6852, roughness: 0.4, metalness: 0.15, wireframe: wf }),
-    greyTile: new THREE.MeshStandardMaterial({ color: 0x545860, roughness: 0.65, metalness: 0.1, wireframe: wf }),
-    brickWarm: new THREE.MeshStandardMaterial({ color: 0xb58c5a, roughness: 0.8, metalness: 0.05, wireframe: wf }),
-    brickDark: new THREE.MeshStandardMaterial({ color: 0x766c61, roughness: 0.85, metalness: 0.05, wireframe: wf }),
-    stone: new THREE.MeshStandardMaterial({ color: 0xe8e2d8, roughness: 0.75, metalness: 0.05, wireframe: wf }),
-    redWood: new THREE.MeshStandardMaterial({ color: 0xa83824, roughness: 0.5, metalness: 0.1, wireframe: wf }),
-    darkWood: new THREE.MeshStandardMaterial({ color: 0x4a2e1b, roughness: 0.7, metalness: 0.05, wireframe: wf }),
-    rock: new THREE.MeshStandardMaterial({ color: 0x938574, roughness: 0.9, metalness: 0.02, wireframe: wf }),
-    buddha: new THREE.MeshStandardMaterial({ color: 0xc8b28f, roughness: 0.45, metalness: 0.18, wireframe: wf }),
-    terracotta: new THREE.MeshStandardMaterial({ color: 0x9c5e3d, roughness: 0.85, metalness: 0.05, wireframe: wf }),
-    earth: new THREE.MeshStandardMaterial({ color: 0xbfa071, roughness: 0.95, metalness: 0.02, wireframe: wf }),
-    water: new THREE.MeshStandardMaterial({ color: 0x487994, roughness: 0.2, metalness: 0.5, transparent: true, opacity: 0.88, wireframe: wf }),
-    goldSpire: new THREE.MeshStandardMaterial({ color: 0xe5b238, roughness: 0.25, metalness: 0.7, wireframe: wf })
-  };
-
-  const g = new THREE.Group();
-
-  function addMesh(geo, mat, x=0, y=0, z=0, rx=0, ry=0, rz=0, cast=true, rec=true){
-    const m = new THREE.Mesh(geo, mat);
-    m.position.set(x, y, z);
-    m.rotation.set(rx, ry, rz);
-    m.castShadow = cast;
-    m.receiveShadow = rec;
-    g.add(m);
-    return m;
-  }
-
-  // 1. 大雁塔
-  if(item.id === "xian-dayanta"){
-    // 3-tier plinth
-    addMesh(new THREE.BoxGeometry(16, 0.8, 16), M.stone, 0, 0.4, 0);
-    addMesh(new THREE.BoxGeometry(14, 0.8, 14), M.stone, 0, 1.2, 0);
-    addMesh(new THREE.BoxGeometry(12, 0.6, 12), M.stone, 0, 1.9, 0);
-
-    let curY = 2.2;
-    for(let i=0; i<7; i++){
-      const w = 10.2 - i * 1.05;
-      const h = 2.2 - i * 0.14;
-      // Wall
-      addMesh(new THREE.BoxGeometry(w, h, w), M.brickWarm, 0, curY + h/2, 0);
-      // Arched recessed gates on 4 faces
-      const gw = w * 0.26, gh = h * 0.65;
-      addMesh(new THREE.BoxGeometry(gw, gh, 0.15), M.darkWood, 0, curY + gh/2 + 0.1, w/2 + 0.02);
-      addMesh(new THREE.BoxGeometry(gw, gh, 0.15), M.darkWood, 0, curY + gh/2 + 0.1, -w/2 - 0.02);
-      addMesh(new THREE.BoxGeometry(0.15, gh, gw), M.darkWood, w/2 + 0.02, curY + gh/2 + 0.1, 0);
-      addMesh(new THREE.BoxGeometry(0.15, gh, gw), M.darkWood, -w/2 - 0.02, curY + gh/2 + 0.1, 0);
-      // Corbelled Eaves
-      addMesh(new THREE.BoxGeometry(w + 1.4, 0.35, w + 1.4), M.greyTile, 0, curY + h + 0.17, 0);
-      curY += h + 0.35;
-    }
-    // Spire
-    addMesh(new THREE.ConeGeometry(0.7, 2.4, 12), M.goldSpire, 0, curY + 1.2, 0);
-    addMesh(new THREE.SphereGeometry(0.45, 12, 12), M.goldSpire, 0, curY + 2.5, 0);
-  }
-
-  // 2. 龙门石窟
-  else if(item.id === "luoyang-longmen"){
-    // Mountain backdrop & horseshoe grotto niche
-    addMesh(new THREE.BoxGeometry(22, 18, 6), M.rock, 0, 9, -2);
-    addMesh(new THREE.BoxGeometry(6, 18, 12), M.rock, -10, 9, 2);
-    addMesh(new THREE.BoxGeometry(6, 18, 12), M.rock, 10, 9, 2);
-    addMesh(new THREE.BoxGeometry(22, 4, 10), M.rock, 0, 17, 1);
-
-    // Lotus seat
-    addMesh(new THREE.CylinderGeometry(4.2, 4.8, 1.8, 16), M.stone, 0, 0.9, 2);
-    addMesh(new THREE.CylinderGeometry(3.6, 4.2, 0.8, 16), M.stone, 0, 2.2, 2);
-
-    // Buddha body & robe
-    addMesh(new THREE.CylinderGeometry(2.4, 3.2, 4.6, 14), M.buddha, 0, 4.8, 2);
-    // Crossed legs
-    addMesh(new THREE.CylinderGeometry(3.4, 3.8, 1.4, 12), M.buddha, 0, 3.2, 2.2);
-    // Head & Ushnisha
-    addMesh(new THREE.SphereGeometry(1.35, 16, 16), M.buddha, 0, 8.2, 2);
-    addMesh(new THREE.SphereGeometry(0.55, 12, 12), M.buddha, 0, 9.4, 2);
-
-    // Aureole / Flame Halo behind head
-    addMesh(new THREE.TorusGeometry(3.6, 0.25, 8, 32), M.gold, 0, 7.8, 0.6);
-    addMesh(new THREE.CylinderGeometry(3.4, 3.4, 0.1, 24), M.stone, 0, 7.8, 0.5, Math.PI/2, 0, 0);
-
-    // Flanking Disciple statues
-    [-5.8, 5.8].forEach(x => {
-      addMesh(new THREE.BoxGeometry(1.6, 1.2, 1.6), M.stone, x, 0.6, 2.5);
-      addMesh(new THREE.CylinderGeometry(0.7, 0.9, 4.2, 10), M.buddha, x, 3.2, 2.5);
-      addMesh(new THREE.SphereGeometry(0.65, 12, 12), M.buddha, x, 5.8, 2.5);
-    });
-  }
-
-  // 3. 秦始皇兵马俑
-  else if(item.id === "xian-bingmayong"){
-    // Excavation trench
-    addMesh(new THREE.BoxGeometry(22, 1.2, 18), M.earth, 0, 0.6, 0);
-    addMesh(new THREE.BoxGeometry(2.5, 3.5, 18), M.earth, -7.5, 2.2, 0);
-    addMesh(new THREE.BoxGeometry(2.5, 3.5, 18), M.earth, 7.5, 2.2, 0);
-
-    // Central Hero General
-    const cx = 0, cz = 2;
-    addMesh(new THREE.BoxGeometry(2.8, 0.5, 2.8), M.stone, cx, 1.45, cz);
-    // Legs & skirt
-    addMesh(new THREE.CylinderGeometry(0.9, 1.1, 2.8, 10), M.terracotta, cx, 3.1, cz);
-    // Armored Torso with fish scale plate
-    addMesh(new THREE.BoxGeometry(1.9, 2.6, 1.3), M.terracotta, cx, 5.2, cz);
-    // Crossed hands
-    addMesh(new THREE.BoxGeometry(1.4, 0.6, 0.8), M.terracotta, cx, 4.4, cz + 0.5);
-    // Head & He-cap / topknot bun
-    addMesh(new THREE.SphereGeometry(0.75, 14, 14), M.terracotta, cx, 7.0, cz);
-    addMesh(new THREE.BoxGeometry(0.5, 0.45, 0.5), M.terracotta, cx + 0.2, 7.7, cz - 0.1);
-
-    // Flanking ranks of Terracotta Warriors
-    [[-3.8, -3], [-3.8, 1], [-3.8, 5], [3.8, -3], [3.8, 1], [3.8, 5], [0, -4]].forEach(([wx, wz]) => {
-      addMesh(new THREE.CylinderGeometry(0.6, 0.75, 2.2, 8), M.terracotta, wx, 2.3, wz);
-      addMesh(new THREE.BoxGeometry(1.3, 1.8, 0.9), M.terracotta, wx, 3.8, wz);
-      addMesh(new THREE.SphereGeometry(0.55, 10, 10), M.terracotta, wx, 5.2, wz);
-    });
-  }
-
-  // 4. 西安城墙 · 永宁门
-  else if(item.id === "xian-citywall"){
-    // Rampart wall with sloped sides
-    addMesh(new THREE.BoxGeometry(24, 6, 10), M.brickDark, 0, 3, 0);
-    // Arch tunnel entrance
-    addMesh(new THREE.BoxGeometry(4.2, 3.8, 10.4), M.darkWood, 0, 1.9, 0);
-
-    // Battlements / Crenels
-    for(let x=-11; x<=11; x+=2.2){
-      addMesh(new THREE.BoxGeometry(1.4, 0.9, 0.5), M.brickDark, x, 6.45, 4.8);
-      addMesh(new THREE.BoxGeometry(1.4, 0.9, 0.5), M.brickDark, x, 6.45, -4.8);
-    }
-
-    // Lower Gatehouse Hall
-    addMesh(new THREE.BoxGeometry(14, 3.2, 6.5), M.redWood, 0, 7.6, 0);
-    // Pillars
-    [-6, -2, 2, 6].forEach(px => {
-      [-2.8, 2.8].forEach(pz => addMesh(new THREE.CylinderGeometry(0.22, 0.22, 3.2, 8), M.redWood, px, 7.6, pz));
-    });
-    // Lower Eave
-    addMesh(new THREE.BoxGeometry(16.5, 0.6, 8.5), M.greyTile, 0, 9.4, 0);
-
-    // Upper Hall
-    addMesh(new THREE.BoxGeometry(11.5, 2.6, 5), M.redWood, 0, 10.8, 0);
-    // Hip-and-Gable Roof (歇山顶)
-    addMesh(new THREE.BoxGeometry(14, 0.7, 7.2), M.greyTile, 0, 12.3, 0);
-    addMesh(new THREE.ConeGeometry(4.5, 1.6, 4), M.greyTile, 0, 13.2, 0, 0, Math.PI/4, 0);
-    // Ridge Beasts
-    addMesh(new THREE.BoxGeometry(0.4, 0.6, 0.4), M.gold, -4.8, 13.2, 0);
-    addMesh(new THREE.BoxGeometry(0.4, 0.6, 0.4), M.gold, 4.8, 13.2, 0);
-  }
-
-  // 5. 应天门
-  else if(item.id === "luoyang-yingtianmen"){
-    // Massive Podium
-    addMesh(new THREE.BoxGeometry(26, 4.5, 8), M.brickDark, 0, 2.25, 0);
-    // Central triple arch
-    [-3.5, 0, 3.5].forEach(ax => addMesh(new THREE.BoxGeometry(2.2, 2.8, 8.3), M.darkWood, ax, 1.4, 0));
-
-    // Central Grand Palace Gatehouse
-    addMesh(new THREE.BoxGeometry(12, 3.6, 5.5), M.redWood, 0, 6.3, 0);
-    addMesh(new THREE.BoxGeometry(14.5, 0.6, 7.5), M.gold, 0, 8.2, 0);
-    addMesh(new THREE.BoxGeometry(9.5, 2.4, 4), M.redWood, 0, 9.5, 0);
-    addMesh(new THREE.BoxGeometry(12, 0.6, 6), M.gold, 0, 10.9, 0);
-
-    // Left & Right Que Towers (三出阙)
-    [-10.5, 10.5].forEach(qx => {
-      addMesh(new THREE.BoxGeometry(4.5, 4.2, 4.5), M.redWood, qx, 6.6, 1.5);
-      addMesh(new THREE.BoxGeometry(5.8, 0.5, 5.8), M.gold, qx, 8.9, 1.5);
-      addMesh(new THREE.BoxGeometry(3.2, 2.2, 3.2), M.redWood, qx, 10.1, 1.5);
-      addMesh(new THREE.BoxGeometry(4.4, 0.5, 4.4), M.gold, qx, 11.3, 1.5);
-
-      // Flying Bridges (飞桥) connecting Que to Center
-      const bx = qx > 0 ? 5.8 : -5.8;
-      addMesh(new THREE.BoxGeometry(4.5, 0.4, 1.8), M.redWood, bx, 6.8, 0.6);
-      addMesh(new THREE.BoxGeometry(4.5, 0.4, 0.1), M.stone, bx, 7.2, 1.5);
-    });
-  }
-
-  // 6. 中华门瓮城
-  else if(item.id === "nanjing-zhonghuamen"){
-    // Outer Barbican Walls
-    addMesh(new THREE.BoxGeometry(24, 5, 20), M.brickDark, 0, 2.5, 0);
-    // Cutout courtyards (triple barbican)
-    addMesh(new THREE.BoxGeometry(18, 5.2, 4.5), M.stone, 0, 2.7, -5.5);
-    addMesh(new THREE.BoxGeometry(18, 5.2, 4.5), M.stone, 0, 2.7, 0);
-    addMesh(new THREE.BoxGeometry(18, 5.2, 4.5), M.stone, 0, 2.7, 5.5);
-
-    // 4 successive arched vault gates
-    [-8, -2.7, 2.7, 8].forEach(gz => {
-      addMesh(new THREE.BoxGeometry(3.6, 3.5, 2.2), M.darkWood, 0, 1.75, gz);
-    });
-
-    // Garrison Vault niches (藏兵洞) inside walls
-    [-8.5, 8.5].forEach(sx => {
-      [-6, -3, 0, 3, 6].forEach(sz => {
-        addMesh(new THREE.BoxGeometry(1.2, 2.2, 1.8), M.darkWood, sx, 1.5, sz);
-      });
-    });
-
-    // Upper Tower on main rampart
-    addMesh(new THREE.BoxGeometry(12, 2.8, 4), M.redWood, 0, 6.4, -8);
-    addMesh(new THREE.BoxGeometry(14, 0.5, 5.5), M.greyTile, 0, 7.9, -8);
-  }
-
-  // 7. 陕州地坑院
-  else if(item.id === "sanmenxia-dikengyuan"){
-    // Upper Earth ground plateau
-    addMesh(new THREE.BoxGeometry(24, 4.5, 24), M.earth, 0, 2.25, 0);
-    // Sunken Courtyard hole (6m deep)
-    addMesh(new THREE.BoxGeometry(11, 4.6, 11), M.stone, 0, 2.4, 0);
-
-    // Parapet safety curb along top rim
-    addMesh(new THREE.BoxGeometry(12, 0.4, 0.4), M.brickWarm, 0, 4.65, 5.7);
-    addMesh(new THREE.BoxGeometry(12, 0.4, 0.4), M.brickWarm, 0, 4.65, -5.7);
-    addMesh(new THREE.BoxGeometry(0.4, 0.4, 12), M.brickWarm, 5.7, 4.65, 0);
-    addMesh(new THREE.BoxGeometry(0.4, 0.4, 12), M.brickWarm, -5.7, 4.65, 0);
-
-    // 4 Cave Dwellings (窑洞) into the 4 walls
-    addMesh(new THREE.BoxGeometry(2.4, 2.6, 1.5), M.darkWood, 0, 1.4, 5.4);
-    addMesh(new THREE.BoxGeometry(2.4, 2.6, 1.5), M.darkWood, 0, 1.4, -5.4);
-    addMesh(new THREE.BoxGeometry(1.5, 2.6, 2.4), M.darkWood, 5.4, 1.4, 0);
-    addMesh(new THREE.BoxGeometry(1.5, 2.6, 2.4), M.darkWood, -5.4, 1.4, 0);
-
-    // Courtyard tree & drainage well
-    addMesh(new THREE.CylinderGeometry(0.7, 0.9, 0.4, 12), M.stone, -2.5, 0.3, -2.5);
-    addMesh(new THREE.CylinderGeometry(0.2, 0.3, 3.8, 6), M.darkWood, 2.8, 2.0, 2.8);
-    addMesh(new THREE.SphereGeometry(1.4, 8, 8), M.green, 2.8, 4.0, 2.8);
-  }
-
-  // 8. 开封龙亭大殿
-  else if(item.id === "kaifeng-longting"){
-    // 13m high tiered red/brick podium
-    addMesh(new THREE.BoxGeometry(22, 5.5, 16), M.brickDark, 0, 2.75, -2);
-
-    // 72-step Imperial Staircase & Dragon Carving ramp
-    addMesh(new THREE.BoxGeometry(7, 4.5, 9), M.stone, 0, 2.25, 6.5, -0.42, 0, 0);
-    addMesh(new THREE.BoxGeometry(2, 4.6, 9), M.stone, 0, 2.35, 6.5, -0.42, 0, 0); // Dragon relief
-
-    // Hall base & columns
-    addMesh(new THREE.BoxGeometry(16, 0.6, 10), M.stone, 0, 5.8, -2);
-    addMesh(new THREE.BoxGeometry(13, 3.4, 7.5), M.redWood, 0, 7.6, -2);
-    // Double Eaves
-    addMesh(new THREE.BoxGeometry(16, 0.6, 10.5), M.gold, 0, 9.4, -2);
-    addMesh(new THREE.BoxGeometry(11, 2.2, 6), M.redWood, 0, 10.6, -2);
-    addMesh(new THREE.BoxGeometry(13.8, 0.7, 8.5), M.gold, 0, 11.9, -2);
-    addMesh(new THREE.ConeGeometry(4.5, 1.6, 4), M.gold, 0, 12.8, -2, 0, Math.PI/4, 0);
-  }
-
-  // 9. 清明上河园 · 拂云阁与虹桥
-  else if(item.id === "kaifeng-qingminghuayuan"){
-    // River canal water
-    addMesh(new THREE.BoxGeometry(26, 0.6, 12), M.water, 0, 0.3, 4);
-
-    // Rainbow Bridge (虹桥) - woven timber arch
-    addMesh(new THREE.TorusGeometry(7.5, 0.6, 8, 24, Math.PI * 0.45), M.redWood, -4, 0.2, 4, 0, 0, Math.PI * 0.275);
-    addMesh(new THREE.BoxGeometry(11, 0.3, 3.2), M.darkWood, -4, 2.4, 4);
-    // Bridge railings
-    addMesh(new THREE.BoxGeometry(11, 0.5, 0.1), M.redWood, -4, 2.8, 5.5);
-    addMesh(new THREE.BoxGeometry(11, 0.5, 0.1), M.redWood, -4, 2.8, 2.5);
-
-    // Fuyun Pavilion (拂云阁) - 3-tier octagonal lakeside pavilion
-    const px = 6.5, pz = -3;
-    addMesh(new THREE.CylinderGeometry(5.2, 5.5, 1.2, 8), M.stone, px, 0.6, pz);
-    let curY = 1.2;
-    for(let lvl=0; lvl<3; lvl++){
-      const r = 4.2 - lvl * 0.7;
-      const h = 2.6 - lvl * 0.2;
-      addMesh(new THREE.CylinderGeometry(r, r, h, 8), M.redWood, px, curY + h/2, pz);
-      // Eaves
-      addMesh(new THREE.CylinderGeometry(0.8, r + 1.6, 0.55, 8), M.green, px, curY + h + 0.27, pz);
-      curY += h + 0.55;
-    }
-    // Finial
-    addMesh(new THREE.SphereGeometry(0.5, 10, 10), M.goldSpire, px, curY + 0.5, pz);
-  }
-
-  // 10. 夫子庙 · 大成殿
-  else if(item.id === "nanjing-fuzimiao"){
-    // Courtyard stone terrace
-    addMesh(new THREE.BoxGeometry(20, 0.8, 18), M.stone, 0, 0.4, 0);
-
-    // Front Screen Wall (大照壁)
-    addMesh(new THREE.BoxGeometry(14, 3.2, 0.8), M.redWood, 0, 2.0, 7.5);
-    addMesh(new THREE.BoxGeometry(15.2, 0.5, 1.4), M.gold, 0, 3.7, 7.5);
-
-    // Dacheng Hall
-    addMesh(new THREE.BoxGeometry(14, 0.6, 10), M.stone, 0, 1.0, -2);
-    addMesh(new THREE.BoxGeometry(12, 3.5, 8), M.redWood, 0, 2.8, -2);
-    // Pillars
-    [-5, -1.8, 1.8, 5].forEach(x => {
-      addMesh(new THREE.CylinderGeometry(0.2, 0.2, 3.5, 8), M.redWood, x, 2.8, 2.1);
-    });
-    // Double Eaves
-    addMesh(new THREE.BoxGeometry(15, 0.6, 11), M.gold, 0, 4.7, -2);
-    addMesh(new THREE.BoxGeometry(10, 2.0, 6.5), M.redWood, 0, 5.8, -2);
-    addMesh(new THREE.BoxGeometry(13.2, 0.7, 9.2), M.gold, 0, 7.0, -2);
-    addMesh(new THREE.ConeGeometry(4.2, 1.5, 4), M.gold, 0, 7.8, -2, 0, Math.PI/4, 0);
-  }
-
-  modelGroup3D.add(g);
-}
-
-function switch3DView(viewKey){
-  const item = MODELS_3D.find(m => m.id === current3DId);
-  if(!item || !item.views || !item.views[viewKey] || !camera3D) return;
-  current3DView = viewKey;
-
-  $$(".m3d-view-btn").forEach(btn => btn.classList.toggle("on", btn.dataset.view === viewKey));
-
-  const targetView = item.views[viewKey];
-  camTween.active = true;
-  camTween.startTime = performance.now();
-  camTween.startPos = camera3D.position.clone();
-  camTween.endPos = new THREE.Vector3(...targetView.pos);
-  camTween.startTarget = controls3D ? controls3D.target.clone() : new THREE.Vector3(0, 5, 0);
-  camTween.endTarget = new THREE.Vector3(...targetView.target);
-}
-
-function select3DModel(id, keepAngle){
-  const item = MODELS_3D.find(m => m.id === id);
-  if(!item) return;
-  current3DId = id;
-
-  $$(".m3d-item").forEach(el => el.classList.toggle("on", el.dataset.id === id));
-
-  // Update Center Stage
-  const idx = MODELS_3D.findIndex(m => m.id === id) + 1;
-  const tEl = $("#m3d-stage-title");
-  if(tEl){
-    tEl.innerHTML = `<h3>${esc(item.name)}</h3><div class="en">${esc(item.enName)}</div>`;
-  }
-  const iEl = $("#m3d-stage-index");
-  if(iEl){
-    iEl.textContent = `${String(idx).padStart(2, "0")} / ${String(MODELS_3D.length).padStart(2, "0")}`;
-  }
-  const pEl = $("#m3d-tag-pill");
-  if(pEl){
-    pEl.innerHTML = `<span>${item.emoji}</span><span>${esc(item.tag)}</span>`;
-  }
-
-  // Update Right Info Panel
-  render3DInfoPanel(item);
-
-  // Build 3D Model in Stage
-  if(scene3D){
-    build3DModel(item);
-    if(!keepAngle){
-      switch3DView("front");
-    }
-  }
-}
-
-function filter3DCity(city){
-  current3DCity = city;
-  $$(".m3d-city-btn").forEach(btn => btn.classList.toggle("on", btn.dataset.city === city));
-  render3DList();
-}
-
-function toggle3DAutoRotate(){
-  autoRotate3D = !autoRotate3D;
-  const btn = $("#m3d-btn-rotate");
-  if(btn) btn.classList.toggle("active", autoRotate3D);
-  toast(autoRotate3D ? "已开启自动旋转 🔄" : "已暂停自动旋转 ⏸️");
-}
-
-function reset3DView(){
-  if(modelGroup3D) modelGroup3D.rotation.set(0, 0, 0);
-  switch3DView("front");
-  toast("视角已重置");
-}
-
-function toggle3DFullscreen(){
-  const col = $("#m3d-stage-col");
-  if(!col) return;
-  if(!document.fullscreenElement){
-    col.requestFullscreen().catch(()=>{});
-  }else{
-    document.exitFullscreen().catch(()=>{});
-  }
-  setTimeout(resize3DViewer, 200);
-}
-
-function toggle3DWireframe(){
-  wireframe3D = !wireframe3D;
-  const btn = $("#m3d-btn-wire");
-  if(btn) btn.classList.toggle("active", wireframe3D);
-  const item = MODELS_3D.find(m => m.id === current3DId);
-  if(item) build3DModel(item);
-  toast(wireframe3D ? "已切换为线框结构模式 📐" : "已切换为实景材质模式 🎨");
+// 真实模型展厅：只嵌入已有公开作品，并明确标注作者与来源。
+function select3DModel(id){
+  if(!MODELS_3D.some(item=>item.id===id))return;
+  current3DId=id;
+  render3DGallery();
 }
 
 function open3DModel(id){
-  const found = MODELS_3D.find(m => m.id === id || m.spotId === id);
-  if(found){
-    current3DId = found.id;
-    if(current3DCity !== "全部" && found.city !== current3DCity){
-      current3DCity = "全部";
-    }
-  }
+  const found=MODELS_3D.find(item=>item.id===id||item.spotId===id);
+  if(found)current3DId=found.id;
+  const galleryReady=!!$("#m3d-canvas-wrap");
   showPage("models3d");
-  render3DGallery();
-  if(found){
-    select3DModel(found.id);
-  }
-}
-
-function render3DList(){
-  const listEl = $("#m3d-list-body");
-  if(!listEl) return;
-  const filtered = current3DCity === "全部" ? MODELS_3D : MODELS_3D.filter(m => m.city === current3DCity);
-  listEl.innerHTML = filtered.map((m, i) => `
-    <div class="m3d-item ${m.id === current3DId ? "on" : ""}" data-id="${m.id}" onclick="select3DModel('${m.id}')">
-      <div class="m3d-item-num">${String(i + 1).padStart(2, "0")}</div>
-      <div class="m3d-item-icon">${m.emoji}</div>
-      <div class="m3d-item-info">
-        <div class="m3d-item-name">${esc(m.name)}</div>
-        <div class="m3d-item-sub">${esc(m.tag)}</div>
-      </div>
-    </div>
-  `).join("");
-}
-
-function render3DInfoPanel(item){
-  const infoEl = $("#m3d-info-col");
-  if(!infoEl) return;
-  const views = item.views || {};
-  infoEl.innerHTML = `
-    <div>
-      <div class="m3d-sec-head">📸 多视角切换 <span>4个基准视角</span></div>
-      <div class="m3d-views-grid" style="margin-top:8px">
-        ${Object.entries(views).map(([k, v]) => `
-          <button class="m3d-view-btn ${k === current3DView ? "on" : ""}" data-view="${k}" onclick="switch3DView('${k}')">
-            <span class="v-ic">${{ front: "🧭", side: "📐", back: "🔙", top: "🛸" }[k] || "👁️"}</span>
-            <span>${esc(v.name)}</span>
-          </button>
-        `).join("")}
-      </div>
-    </div>
-
-    <div>
-      <div class="m3d-sec-head">📋 基本信息 <span>建筑档案</span></div>
-      <div class="m3d-table" style="margin-top:8px">
-        <div class="m3d-table-row"><span class="m3d-table-k">始建</span><span class="m3d-table-v">${esc(item.year)}</span></div>
-        <div class="m3d-table-row"><span class="m3d-table-k">结构</span><span class="m3d-table-v">${esc(item.structure)}</span></div>
-        <div class="m3d-table-row"><span class="m3d-table-k">材料</span><span class="m3d-table-v">${esc(item.material)}</span></div>
-        <div class="m3d-table-row"><span class="m3d-table-k">形制</span><span class="m3d-table-v">${esc(item.form)}</span></div>
-        <div class="m3d-table-row"><span class="m3d-table-k">保护</span><span class="m3d-table-v">${esc(item.protect)}</span></div>
-      </div>
-    </div>
-
-    <div>
-      <div class="m3d-sec-head">📜 营造通略 · 故事与解密</div>
-      <div class="m3d-story-card" style="margin-top:8px">
-        <div class="m3d-story-title">💡 建筑营造智慧</div>
-        ${item.story.split("\n\n").map(p => `<p class="m3d-story-p">${esc(p)}</p>`).join("")}
-      </div>
-    </div>
-
-    <div class="m3d-actions">
-      <button class="m3d-action-btn primary" onclick="playAudio('${item.spotId}')">🎙️ 听景点语音讲解</button>
-      <button class="m3d-action-btn secondary" onclick="openSpotDetail('${item.spotId}')">📖 查看景点全攻略</button>
-    </div>
-  `;
+  if(galleryReady)render3DGallery();
 }
 
 function render3DGallery(){
-  const container = $("#p-models3d");
-  if(!container) return;
-
-  const current = MODELS_3D.find(m => m.id === current3DId) || MODELS_3D[0];
-  const cities = ["全部", "南京", "洛阳", "西安", "三门峡", "开封"];
-  const idx = MODELS_3D.findIndex(m => m.id === current.id) + 1;
-
-  container.innerHTML = `
-    <div class="sec-title" style="margin-top:8px"><span class="bar"></span>🏛️ 国家古建筑 3D · 三维名胜展厅</div>
-    <div class="ov-note" style="margin-bottom:10px"><span class="ic">✨</span><div>收录行程中<b>10座标志性古建筑与文物</b>三维模型，支持<b>360°旋转、缩放、多角度切换</b>与建筑结构解密。让乐乐身临其境触摸千年营造智慧！</div></div>
-
-    <div class="m3d-wrap">
-      <div class="m3d-top-nav">
-        <div class="m3d-city-filter">
-          ${cities.map(c => `<button class="m3d-city-btn ${c === current3DCity ? "on" : ""}" data-city="${c}" onclick="filter3DCity('${c}')">${c}</button>`).join("")}
-        </div>
-        <div class="tiny" style="color:var(--ink-faint)">🖱️/👆 拖拽旋转 · 滚轮/双指缩放</div>
+  const container=$("#p-models3d");
+  if(!container)return;
+  const current=MODELS_3D.find(item=>item.id===current3DId)||MODELS_3D[0];
+  current3DId=current.id;
+  const embedSrc=`https://sketchfab.com/models/${current.embedId}/embed?autostart=0&preload=0&ui_infos=0&ui_watermark_link=1&ui_watermark=1`;
+  container.innerHTML=`
+    <div class="sec-title" style="margin-top:8px"><span class="bar"></span>🏛️ 真实古迹 · 3D 漫游</div>
+    <div class="real3d-trust"><span>🔎</span><div><b>这里展示的都是真实已有作品。</b>我们删掉了原先用方块和圆锥拼成的10个示意模型，只留下与行程准确对应、作者和来源可查的3件公开模型。模型由 Sketchfab 提供，首次打开需要联网加载。</div></div>
+    <div class="real3d-shell">
+      <div class="real3d-list" aria-label="选择一处古迹">
+        ${MODELS_3D.map(item=>`
+          <button class="real3d-choice ${item.id===current.id?"on":""}" onclick="select3DModel('${item.id}')" aria-pressed="${item.id===current.id}">
+            <span class="ic">${item.emoji}</span>
+            <span><b>${esc(item.name)}</b><small>${esc(item.city)} · ${esc(item.sourceLabel)}</small></span>
+            <span class="arrow">›</span>
+          </button>
+        `).join("")}
       </div>
-
-      <div class="m3d-layout">
-        <!-- Left: Item List -->
-        <div class="m3d-list-col">
-          <div class="m3d-list-head">
-            <span>古建目录</span>
-            <span class="tiny">${MODELS_3D.length} 座建筑</span>
-          </div>
-          <div class="m3d-list-body" id="m3d-list-body"></div>
+      <div class="real3d-viewer">
+        <div class="real3d-frame-wrap" id="m3d-canvas-wrap">
+          <div class="real3d-loading" id="real3d-loading">正在连接 3D 展厅…</div>
+          <iframe class="real3d-frame" title="${esc(current.name)}三维模型" src="${embedSrc}" loading="lazy" allow="autoplay; fullscreen; xr-spatial-tracking" allowfullscreen onload="document.getElementById('real3d-loading')?.classList.add('hide')"></iframe>
         </div>
-
-        <!-- Center: 3D Stage -->
-        <div class="m3d-stage-col" id="m3d-stage-col">
-          <div class="m3d-stage-top">
-            <div class="m3d-tag-pill" id="m3d-tag-pill"><span>${current.emoji}</span><span>${esc(current.tag)}</span></div>
-          </div>
-
-          <div class="m3d-controls">
-            <button class="m3d-ctrl-btn ${autoRotate3D ? "active" : ""}" id="m3d-btn-rotate" title="自动旋转" onclick="toggle3DAutoRotate()">🔄</button>
-            <button class="m3d-ctrl-btn" title="重置视角" onclick="reset3DView()">🧭</button>
-            <button class="m3d-ctrl-btn ${wireframe3D ? "active" : ""}" id="m3d-btn-wire" title="线框/材质切换" onclick="toggle3DWireframe()">📐</button>
-            <button class="m3d-ctrl-btn" title="全屏查看" onclick="toggle3DFullscreen()">⛶</button>
-          </div>
-
-          <div class="m3d-canvas-wrap" id="m3d-canvas-wrap"></div>
-          <div class="m3d-hint">👆 单指滑动旋转 · 双指缩放</div>
-
-          <div class="m3d-stage-bottom">
-            <div class="m3d-stage-title" id="m3d-stage-title">
-              <h3>${esc(current.name)}</h3>
-              <div class="en">${esc(current.enName)}</div>
-            </div>
-            <div class="m3d-stage-index" id="m3d-stage-index">${String(idx).padStart(2, "0")} / ${String(MODELS_3D.length).padStart(2, "0")}</div>
-          </div>
+        <div class="real3d-caption">
+          <div><h3>${current.emoji} ${esc(current.name)}</h3><p>${esc(current.enName)} · 作者：${esc(current.author)}</p></div>
+          <a class="real3d-source" href="${current.sourceUrl}" target="_blank" rel="noopener noreferrer">查看原作与作者 ↗</a>
         </div>
-
-        <!-- Right: Info Panel -->
-        <div class="m3d-info-col" id="m3d-info-col"></div>
       </div>
-    </div>
-  `;
-
-  render3DList();
-  render3DInfoPanel(current);
-  init3DViewer();
+      <div class="real3d-guide">
+        <div class="real3d-guide-card"><b>👀 乐乐的观察任务</b>${esc(current.focus)}</div>
+        <div class="real3d-guide-card"><b>📜 先知道这个故事</b>${esc(current.story)}<br><span class="tiny">${esc(current.year)}</span></div>
+      </div>
+    </div>`;
 }
 
 /* =============== TABS =============== */
@@ -2438,7 +1572,7 @@ function openSpotDetail(id){
   <a onclick="closeSpotDetail();return false" href="#" class="sd-back">‹ 返回景点列表</a>
   <div class="sd-header"><h2>${s.emoji} ${esc(s.name)}</h2><span class="stars">${"★".repeat(Math.round(s.rating))}${"☆".repeat(5-Math.round(s.rating))}</span></div>
   <div class="sd-meta"><i>📍 ${esc(s.city)}</i><i>⏱️ ${esc(s.dur)}</i><i>🎫 ${esc(s.price)}</i>${navChip(s.id,"nav-chip","导航到此").replace('class="nav-chip"','class="nav-chip" style="padding:4px 13px"')}</div>
-  ${has3DModel(s.id)?`<div style="margin:10px 0 14px"><button class="btn" style="width:100%;background:linear-gradient(135deg,#fdf8ec,#f4e3be);border:1px solid #e2cc95;color:#8a6414;font-weight:700;padding:10px 16px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 8px rgba(217,154,43,.12);cursor:pointer" onclick="open3DModel('${s.id}')">🏛️ 开启该景点 3D 建模交互鉴赏 ›</button></div>`:""}
+  ${has3DModel(s.id)?`<div style="margin:10px 0 14px"><button class="btn" style="width:100%;background:linear-gradient(135deg,#fdf8ec,#f4e3be);border:1px solid #e2cc95;color:#8a6414;font-weight:700;padding:10px 16px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 2px 8px rgba(217,154,43,.12);cursor:pointer" onclick="open3DModel('${s.id}')">🏛️ 打开真实 3D 模型 ›</button></div>`:""}
   ${guide?`<div class="sd-poem"><div class="pt">📜 ${esc(guide.poem)}</div><div class="pv">${esc(guide.verse)}</div>${guide.note?`<div class="pn">💡 ${esc(guide.note)}</div>`:""}</div>`:""}
   <div class="player" id="pl-${s.id}" style="margin-bottom:14px">
     <button class="play-btn" onclick="playAudio('${s.id}')">
@@ -2473,7 +1607,6 @@ function showPage(name){
 
   if(name==="models3d"){
     if(!$("#m3d-canvas-wrap")) render3DGallery();
-    setTimeout(resize3DViewer, 50);
   }
 }
 const PAGES={overview:"#p-overview",route:"#p-route",poetry:"#p-poetry",spots:"#p-spots",models3d:"#p-models3d",hotel:"#p-hotel",food:"#p-food",todo:"#p-todo"};
