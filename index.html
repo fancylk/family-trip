@@ -202,6 +202,10 @@ main{max-width:760px;margin:0 auto;padding:12px 16px 42px}
 .todo-ops button:active{background:rgba(0,0,0,.1)}
 .btn-add{width:100%;padding:13px;border:2px dashed #d5c9b2;border-radius:14px;color:var(--ink-faint);font-size:14px;transition:.15s}
 .btn-add:active{border-color:var(--red);color:var(--red)}
+.ics-main{width:100%;margin-top:10px;padding:12px;border:0;border-radius:13px;background:linear-gradient(135deg,#9a7b1e,#bb953c);color:#fff;font-size:14.5px;font-weight:600;transition:.15s}
+.ics-main:active{opacity:.82}
+.ics-mini{flex-shrink:0;font-size:12px;color:#9a7b1e;background:rgba(154,123,30,.12);padding:6px 12px;border-radius:9px;white-space:nowrap;transition:.15s}
+.ics-mini:active{background:rgba(154,123,30,.25)}
 .notice{padding:13px 15px;border-radius:13px;background:var(--red-soft);font-size:13px;color:var(--red);line-height:1.8;margin-bottom:10px}
 
 /* ---------- modal ---------- */
@@ -1057,6 +1061,7 @@ function navGo(e,k){
 /* =============== RENDER HELPERS =============== */
 const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function toast(msg){const t=$("#toast");if(!t)return;t.textContent=msg;t.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("show"),2600)}
 function syncKeyboardInset(){const vv=window.visualViewport;const inset=vv?Math.max(0,window.innerHeight-vv.height-vv.offsetTop):0;document.documentElement.style.setProperty("--keyboard-inset",inset+"px");}
 function keepFocusedFieldVisible(){const el=document.activeElement;if(!el||!el.matches("input,select,textarea")||!el.closest(".modal"))return;const vv=window.visualViewport;const inset=vv?Math.max(0,window.innerHeight-vv.height-vv.offsetTop):0;const bottom=window.innerHeight-inset-16;const r=el.getBoundingClientRect();const modal=el.closest(".modal");if(r.bottom>bottom)modal.scrollBy({top:r.bottom-bottom,behavior:"smooth"});else if(r.top<modal.getBoundingClientRect().top+12)modal.scrollBy({top:r.top-(modal.getBoundingClientRect().top+12),behavior:"smooth"});}
 syncKeyboardInset();
@@ -1362,6 +1367,65 @@ const API = "https://astock.taoge.xyz/api";
 let TODOS = [];
 const ST_MAP = {todo:["todo","未预订"],booked:["booked","已预订 ✔"],paid:["paid","已付款 💰"],cancel:["cancel","已取消"]};
 
+/* =============== 抢票闹钟 · 一键加入系统日历 =============== */
+/* 需要提前预约、且限定提前天数的门票。ahead=官方要求提前的天数，openTime=放票/开约时刻。
+   日历事件自动落在「游览日 − ahead 天」当天，闹钟在开抢前 5 分钟响铃。放票规则以各官方渠道最新公告为准。 */
+const TICKET_REMINDERS=[
+ {id:"shanli",emoji:"👑",name:"陕西历史博物馆免费票",visitIso:"2026-09-29",visitLabel:"9/29 周二游览",ahead:7,openTime:"17:00",channel:"「陕西历史博物馆」微信公众号",note:"每日17:00放7天后的票，9/22 17:00 准点抢 9/29 免费票，工作日相对好抢"},
+ {id:"bingmayong",emoji:"🧱",name:"秦始皇兵马俑门票",visitIso:"2026-09-30",visitLabel:"9/30 周三上午游览",ahead:7,openTime:"20:00",channel:"「秦始皇帝陵博物院」官方小程序/官网",note:"提前7天预售，9/23 20:00 准点买 9/30 票，实名制先录好全家身份证"},
+ {id:"shangheyuan",emoji:"🏯",name:"清明上河园分时票",visitIso:"2026-10-04",visitLabel:"10/4 周日游览",ahead:5,openTime:"09:00",channel:"官方小程序 / 美团、携程等平台",note:"国庆分时预约票，提前5天 9:00 开抢，建议约下午场（看完接鼓楼夜市）"}
+];
+function ticketOpenMoment(r){ // 北京时间(UTC+8)「开抢前5分钟」→ {ts: UTC毫秒}
+  const [y,m,d]=r.visitIso.split("-").map(Number);
+  const [H,M]=r.openTime.split(":").map(Number);
+  return {ts:Date.UTC(y,m-1,d,H,M)-8*36e5-r.ahead*864e5-5*6e4};
+}
+function ticketOpenCN(r){const dt=new Date(ticketOpenMoment(r).ts+8*36e5);return `${dt.getUTCMonth()+1}月${dt.getUTCDate()}日（周${"日一二三四五六"[dt.getUTCDay()]}）`}
+function icsEsc(s){return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,")}
+function icsFold(line){ // RFC5545：每行 ≤74 字节（UTF-8 安全折行，续行以空格开头）
+  const enc=new TextEncoder();let out=[],cur="";
+  for(const ch of line){if(enc.encode(cur+ch).length>74){out.push(cur);cur=" "}cur+=ch}
+  out.push(cur);return out.join("\r\n");
+}
+function icsStamp(ts){return new Date(ts).toISOString().replace(/[-:]/g,"").replace(/\.\d{3}/,"")}
+function buildTicketICS(items){
+  const L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//trip.taoge.xyz//shanyue-trip//CN","CALSCALE:GREGORIAN","METHOD:PUBLISH","X-WR-CALNAME:山河明月行 · 抢票提醒"];
+  for(const r of items){
+    const openCN=ticketOpenCN(r)+" "+r.openTime;
+    L.push("BEGIN:VEVENT",
+      `UID:trip-${r.id}-booking-2026@trip.taoge.xyz`,
+      `DTSTAMP:${icsStamp(Date.now())}`,
+      `DTSTART:${icsStamp(ticketOpenMoment(r).ts)}`,
+      `DTEND:${icsStamp(ticketOpenMoment(r).ts+35*6e4)}`,
+      `SUMMARY:${icsEsc(`⏰开抢：${r.name}（${openCN}）`)}`,
+      `LOCATION:${icsEsc(r.channel)}`,
+      `DESCRIPTION:${icsEsc(`${r.visitLabel} · 需提前${r.ahead}天预约`)}\\n${icsEsc("渠道："+r.channel)}\\n${icsEsc(r.note)}\\n${icsEsc("闹钟已设在开抢前5分钟；放票时间以官方最新公告为准")}`,
+      "BEGIN:VALARM","ACTION:DISPLAY",
+      `DESCRIPTION:${icsEsc(`⏰该抢票啦！${r.name}，${openCN}准点开抢`)}`,
+      "TRIGGER:-PT0M","END:VALARM","END:VEVENT");
+  }
+  L.push("END:VCALENDAR");
+  return L.map(icsFold).join("\r\n")+"\r\n";
+}
+function addTicketsToCalendar(items){
+  items=items||TICKET_REMINDERS;
+  try{
+    const blob=new Blob([buildTicketICS(items)],{type:"text/calendar;charset=utf-8"});
+    const name=items.length===1?`抢票提醒·${items[0].name}.ics`:"抢票提醒·山河明月行.ics";
+    const file=new File([blob],name,{type:"text/calendar"});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      navigator.share({files:[file],title:"山河明月行 · 抢票提醒"}).then(()=>toast("已交给系统日历 ✓")).catch(()=>{});
+    }else{
+      const a=document.createElement("a");
+      a.href=URL.createObjectURL(blob);a.download=name;
+      document.body.appendChild(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href),4e3);
+      toast("日历文件已下载，点开它即可加入系统日历 ✓");
+    }
+  }catch(e){toast("生成日历失败："+e.message)}
+}
+function addTicketById(id){const r=TICKET_REMINDERS.find(x=>x.id===id);if(r)addTicketsToCalendar([r])}
+
 async function loadTodos() {
   try {
     const r = await fetch(API + "/todos");
@@ -1386,6 +1450,23 @@ async function renderTodo() {
   <div class="sec-title" style="margin-top:8px"><span class="bar"></span>📋 预订待办清单 <span class="tiny" style="font-weight:400">全家共享进度·谁完成谁负责</span></div>
   <div class="card prog"><b class="serif">${done}/${TODOS.length}</b><div class="bar"><i style="width:${TODOS.length ? done / TODOS.length * 100 : 0}%"></i></div><span class="tiny">已完成</span></div>
   <div class="notice">💡 点圆圈切换状态（未预订→已预订→已付款→已取消），状态会同步给全家人。谁预订了谁填写名字，避免重复操作。</div>
+  <div class="card" style="border:1.5px solid #ead9ae;background:linear-gradient(135deg,#fdf7e7,#fbf0d8);margin-bottom:10px">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap">
+      <b class="serif" style="font-size:15.5px">⏰ 抢票闹钟 · 一键加入系统日历</b>
+      <span class="st todo">限定提前天数 ${TICKET_REMINDERS.length} 项</span>
+    </div>
+    <div class="tiny" style="margin:5px 0 2px;color:#8a6414">已按「游览日 − 提前天数」算好每张票的开抢时刻：加入系统日历后，到点闹钟响铃提醒全家准点抢票。放票时间以官方渠道最新公告为准。</div>
+    ${TICKET_REMINDERS.map(r=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px dashed #e6d7b2">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:14px;font-weight:600">${r.emoji} ${esc(r.name)}<span class="st todo" style="margin-left:6px;font-size:10.5px">提前${r.ahead}天</span></div>
+        <div class="tiny" style="margin-top:2px">📅 ${ticketOpenCN(r)} ${r.openTime} 开抢 · ${esc(r.visitLabel)}</div>
+        <div class="tiny" style="color:#9a7b1e">🔔 ${esc(r.note)}</div>
+      </div>
+      <button class="ics-mini" onclick="addTicketById('${r.id}')">＋日历</button>
+    </div>`).join("")}
+    <button class="ics-main" onclick="addTicketsToCalendar()">📅 一键全部加入系统日历（${TICKET_REMINDERS.length} 个闹钟提醒）</button>
+  </div>
   ${TODOS.map(t => {
     const [cls, label] = ST_MAP[t.st] || ST_MAP.todo;
     const isDone = t.st === "booked" || t.st === "paid";
