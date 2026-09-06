@@ -1427,14 +1427,15 @@ function addTicketsToCalendar(items){
 }
 function addTicketById(id){const r=TICKET_REMINDERS.find(x=>x.id===id);if(r)addTicketsToCalendar([r])}
 const IS_ANDROID=/Android/i.test(navigator.userAgent);
-function androidIntentUrl(r){ // Chrome安卓 intent:// 唤起系统日历「新建日程」页（已填好），无处理器时回落 Google 日历网页
+const IN_APP=/MicroMessenger|QQ\/|mqqbrowser|AlipayClient|Weibo|BaiduBox|HeyTapBrowser|HuaweiBrowser|vivoBrowser|OppoBrowser/i.test(navigator.userAgent);
+function androidIntentUrl(r){ // Chrome/安卓浏览器 intent:// 唤起系统日历「新建日程」页；带 content:// 数据URI以最大化机型兼容（小米等），无处理器时回落 Google 日历网页
   const start=ticketOpenMoment(r).ts,end=start+35*6e4,openCN=ticketOpenCN(r)+" "+r.openTime;
   const title=`⏰开抢：${r.name}（${openCN}）`;
   const desc=`${r.visitLabel} · 提前${r.ahead}天\n渠道：${r.channel}\n${r.note}\n开抢前5分钟到点；放票时间以官方最新公告为准`;
   const gcal="https://calendar.google.com/calendar/render?action=TEMPLATE"
     +"&text="+encodeURIComponent(title)+"&dates="+icsStamp(start)+"/"+icsStamp(end)
     +"&details="+encodeURIComponent(desc)+"&location="+encodeURIComponent(r.channel);
-  return "intent:#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.item/event"
+  return "intent://com.android.calendar/events#Intent;scheme=content;action=android.intent.action.INSERT;type=vnd.android.cursor.item/event"
     +";S.title="+encodeURIComponent(title)
     +";S.description="+encodeURIComponent(`${r.visitLabel} · 提前${r.ahead}天\n渠道：${r.channel}\n${r.note}`)
     +";S.eventLocation="+encodeURIComponent(r.channel)
@@ -1442,18 +1443,33 @@ function androidIntentUrl(r){ // Chrome安卓 intent:// 唤起系统日历「新
     +";S.browser_fallback_url="+encodeURIComponent(gcal)
     +";end";
 }
+function fireCalendarIntent(url){ // 唤起后1.6秒仍留在页面 = 没唤起成功，给出明确指引而不是无反应
+  let hidden=false;const onVis=()=>{if(document.hidden)hidden=true};
+  document.addEventListener("visibilitychange",onVis);
+  const t0=Date.now();
+  location.href=url;
+  setTimeout(()=>{
+    document.removeEventListener("visibilitychange",onVis);
+    if(!hidden&&document.visibilityState==="visible"&&Date.now()-t0<3000)
+      toast(IN_APP?"⚠️ 微信/QQ内唤不起日历：点右上角「···」→「在浏览器打开」":"⚠️ 没能唤起日历：请用系统浏览器或 Chrome 打开本页再试，或用下方备用方式");
+  },1600);
+}
+function fireIntentById(id){const r=TICKET_REMINDERS.find(x=>x.id===id);if(r)fireCalendarIntent(androidIntentUrl(r))}
+function copyTripLink(){(navigator.clipboard&&navigator.clipboard.writeText(location.href).then(()=>toast("链接已复制 ✓ 去系统浏览器粘贴打开")).catch(()=>toast("复制失败，请手动复制地址栏链接")))}
 function openAndroidTicketModal(items){ // 安卓逐条写入引导：每条唤起日历编辑页，点保存后返回继续
   items=items||TICKET_REMINDERS;
   const rows=items.map((r,i)=>`
     <div style="border-top:1px dashed #e6d7b2;padding:12px 0">
       <div style="font-size:14.5px;font-weight:600">${r.emoji} ${esc(r.name)} <span class="st todo" style="font-size:10.5px">提前${r.ahead}天</span></div>
       <div class="tiny" style="margin:3px 0 9px">📅 ${ticketOpenCN(r)} ${r.openTime} 开抢 · 开抢前5分钟日历响铃</div>
-      <a class="ics-main" style="display:block;text-align:center;text-decoration:none" href="${androidIntentUrl(r)}">${i+1}. 写入「${esc(r.name)}」→ 点保存</a>
+      <button class="ics-main" style="margin:0" onclick="fireIntentById('${r.id}')">${i+1}. 写入「${esc(r.name)}」→ 日历里点保存</button>
     </div>`).join("");
   $("#modal").innerHTML=`<h3>📱 写入手机日历（安卓）<button onclick="closeModal()">×</button></h3>
+  ${IN_APP?`<div class="notice" style="margin-bottom:8px">⚠️ 当前在微信/QQ等内置浏览器里，无法唤起系统日历。请点右上角「···」→「在浏览器打开」，选择系统浏览器后再来点这些按钮。</div>`:""}
   <div class="tiny" style="margin-bottom:4px">共 ${items.length} 条，约1分钟：点下面每一条 → 系统日历会弹出<b>已填好的日程</b> → 点「保存/√」→ 返回本页继续下一条。保存后闹钟随日程自动生效。</div>
   ${rows}
-  <div class="tiny" style="margin-top:10px">💡 部分手机默认「提前10分钟」提醒，会比抢票时刻早一点响，属正常；想准点响可在日程里把提醒改为「准时」。若点了没反应，说明手机没有日历应用处理，可用下面的备用方式。</div>
+  <div class="tiny" style="margin-top:10px">💡 部分手机默认「提前10分钟」提醒，会比抢票时刻早一点响，属正常；想准点响可在日程里把提醒改为「准时」。若点了没反应，多半是浏览器不支持唤起，换个浏览器或用下面的备用方式。</div>
+  ${IN_APP?`<button class="btn-add" style="margin-top:8px" onclick="copyTripLink()">🔗 复制本页链接（去系统浏览器粘贴打开）</button>`:""}
   <button class="btn-add" style="margin-top:8px" onclick="addTicketsToCalendarFallback()">⬇️ 备用：下载日历文件（.ics）</button>`;
   showModal();
 }
